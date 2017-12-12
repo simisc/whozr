@@ -6,6 +6,7 @@ whozr <- function(d_age,
                   ref_sex_code = c(1, 2),
                   extremes = FALSE,
                   reverse = FALSE) {
+
     print(
         sprintf(
             "IV range in data is %.2f to %.2f: have you used the correct units? Days or months, cm or m?",
@@ -15,7 +16,7 @@ whozr <- function(d_age,
     )
 
     ## Lots to improve here.
-    ## Unquoted variable names (arguments x, y)
+    ## Unquoted variable names (arguments x, y) with data= argument
     ## Data (references) to be kept in package
     ## Defaults for 'extremes' should depend on which scores is being converted
     ## Based on version from SMART paper - check older versions for useful features too.
@@ -32,8 +33,21 @@ whozr <- function(d_age,
     # FALSE for haz, laz, hc (boney)
     # TRUE for waz, baz, whz, wlz, muac, tricep (soft)
 
+    # HAZ: correct_extreme_values = FALSE
+    # WAZ: correct_extreme_values = TRUE
+    # BAZ: correct_extreme_values = TRUE
+    # Infants:
+        # LAZ: correct_extreme_values = FALSE
+        # HCAZ: correct_extreme_values = FALSE
+        # WAZ: correct_extreme_values = TRUE
+        # ACAZ: correct_extreme_values = TRUE
+        # TCAZ: correct_extreme_values = TRUE
+        # WLZ: correct_extreme_values = TRUE
+        # BAZ: correct_extreme_values = TRUE
+
     # Age in DAYS if working with 0-5 reference.
     # Age in MONTHS if working with 5-19 reference.
+    # WHO references coded 1 for males, 2 for females.
 
     n <- length(d_age)
 
@@ -67,6 +81,12 @@ whozr <- function(d_age,
     l <- as.numeric(rep(NA, n))
     m <- as.numeric(rep(NA, n))
     s <- as.numeric(rep(NA, n))
+
+    ## No longer include this option
+    # old = which(d_age > max(ref$age))
+    # if (include_adults) {
+    #     d_age[old] = max(ref$age)
+    # }
 
     ref_boys <- which(ref$sex == ref_sex_code[1])
     ref_grls <- which(ref$sex == ref_sex_code[2])
@@ -120,6 +140,7 @@ whozr <- function(d_age,
         z[small] <- log(d_observed[small] / m[small]) / s[small]
 
         # WHO code includes the following, but not Tim's papers. Where is this from?
+        # This is not included in the "reverse" version... Drop it completely??
         if (extremes) {
             sd3 <- m * ((1 + l * s * 3 * sign(z)) ** (1 / l))
             sd23 <-
@@ -151,11 +172,11 @@ rounde <- function(x, digits = 0) {
     ) / expo)
 }
 
-format_ms <-
-    function(var,
-             figs = 3,
-             sigfig = TRUE,
-             median = FALSE) {
+format_ms <- function(var,
+                      figs = 3,
+                      sigfig = TRUE,
+                      median = FALSE) {
+
         # Format as mean (SD) by default, or as median (Q1, Q3).
         # Based on format_ms and format_iq from SMART paper.
         # Requires testing.
@@ -188,3 +209,48 @@ format_ms <-
         }
         return(out)
     }
+
+compare <- function(v1, v2) {
+    same <- (v1 == v2) | (is.na(v1) & is.na(v2))
+    same[is.na(same)] <- FALSE
+    return(same)
+}
+
+
+### The following should perhaps be in a different package... ###
+
+my_ns <- function(..., centre = 0) {
+    n <- ns(...)
+    adj <- predict(n, newx = centre)
+    df <- length(attr(n, "knots")) + 1
+    if (length(adj) != df) {
+        stop("Length of adj does not much df.")
+    }
+    for (i in 1:df) {
+        n[, i] <- n[, i] - adj[i]
+    }
+    class(n)[1] <- "my_ns"
+    attr(n, "centre") <- centre
+    n
+}
+
+makepredictcall.my_ns <- function (var, call) {
+    if (as.character(call)[1L] != "my_ns")
+        return(call)
+    at <- attributes(var)[c("knots", "Boundary.knots",
+                            "intercept", "centre")]
+    xxx <- call[1L:2L]
+    xxx[names(at)] <- at
+    xxx
+}
+
+predict.my_ns <- function (object, newx, ...) {
+    if (missing(newx))
+        return(object)
+    a <- c(list(x = newx),
+           attributes(object)[c("knots",
+                                "Boundary.knots",
+                                "intercept",
+                                "centre")])
+    n <- do.call("my_ns", a) # should this be the return value? Check usage (in Bt20 project)
+}
