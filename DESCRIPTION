@@ -1,0 +1,15 @@
+Package: whozr
+Type: Package
+Title: Convert Between Raw Anthrops And WHO Z-Scores
+Version: 0.1.0
+Author: Simon Sch...
+Maintainer: The package maintainer <yourself@somewhere.net>
+Description: Convert between raw anthropometric measurement (weight, height,
+    length, etc) and z-scores, using the WHO growth references for 0-5 and 5-19
+    year-olds. Contains functions for calculating z-scores (or reversing to
+    anthrops), rounding numbers, and formatting output for tables.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Imports: dplyr (>= 0.7.4),
+    readr
