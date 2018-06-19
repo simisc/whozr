@@ -15,7 +15,7 @@ whozr <- function(d_age,
         )
     )
 
-    ## Lots to improve here.
+    ## Lots to improve here!
     ## Unquoted variable names (arguments x, y) with data= argument
     ## Data (references) to be kept in package
     ## Defaults for 'extremes' should depend on which scores is being converted
