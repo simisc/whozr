@@ -16,14 +16,13 @@ whozr <- function(d_age,
     )
 
     ## Lots to improve here!
-    ## Unquoted variable names (arguments x, y) with data= argument
-    ## Data (references) to be kept in package
+    ## Data (references) to be kept in package - how to use them?
     ## Defaults for 'extremes' should depend on which scores is being converted
     ## Based on version from SMART paper - check older versions for useful features too.
     ## Add documentation when have basic working version.
 
     # SPLIT UP INTO SEPARATE HAZ, BAZ, etc. functions,
-    # with reverse = TRUE options.
+    # with reverse = T/F options.
 
     # d_observed: if converting to z, this is the raw measurement
     #             if converting from z, this is the z-score
