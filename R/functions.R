@@ -22,6 +22,9 @@ whozr <- function(d_age,
     ## Based on version from SMART paper - check older versions for useful features too.
     ## Add documentation when have basic working version.
 
+    # SPLIT UP INTO SEPARATE HAZ, BAZ, etc. functions,
+    # with reverse = TRUE options.
+
     # d_observed: if converting to z, this is the raw measurement
     #             if converting from z, this is the z-score
 
