@@ -1,6 +1,6 @@
 Package: whozr
 Type: Package
-Title: Convert Between Raw Anthrops And WHO Z-Scores
+Title: Convert Raw Anthrops to WHO Z-Scores
 Version: 0.1.0
 Author: Simon Schoenbuchner
 Description: Convert between raw anthropometric measurement (weight, height,
@@ -10,5 +10,4 @@ Description: Convert between raw anthropometric measurement (weight, height,
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: dplyr (>= 0.7.4),
-    readr
+Imports: dplyr (>= 0.7.5), tibble (>= 1.4.2)

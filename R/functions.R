@@ -84,28 +84,28 @@ whozr <- function(y, x, sex, ref, adjust_large_z = FALSE) {
     # x: age in DAYS (or height for whz)
     # y: outcome
 
-    dat <- tibble(sex = sex, x = x, y = y)
+    dat <- tibble::tibble(sex = sex, x = x, y = y)
 
     dat <- ref %>%
-        full_join(dat, by = c("sex", "x")) %>%
-        group_by(sex) %>%
-        mutate(l = approx(x, l, x)$y,
-               m = approx(x, m, x)$y,
-               s = approx(x, s, x)$y,
-               z = ifelse(abs(l) >= 0.01,
-                          (((y / m) ^ l) - 1) / (l * s),
-                          log(y / m) / s)) %>%
-        semi_join(dat, by = c("sex", "x", "y"))
+        dplyr::full_join(dat, by = c("sex", "x")) %>%
+        dplyr::group_by(sex) %>%
+        dplyr::mutate(l = approx(x, l, x)$y,
+                      m = approx(x, m, x)$y,
+                      s = approx(x, s, x)$y,
+                      z = ifelse(abs(l) >= 0.01,
+                                 (((y / m) ^ l) - 1) / (l * s),
+                                 log(y / m) / s)) %>%
+        dplyr::semi_join(dat, by = c("sex", "x", "y"))
 
     if (adjust_large_z) {
         # WHO "macro" includes the following, but not Tim's papers. Where is this from?
         # Only for WAZ, BAZ, ACAZ, TCAZ, WHZ, SSAZ (soft). Do not use for HAZ, HCAZ (boney).
         dat <- dat %>%
-            mutate(sd3 = m * ((1 + l * s * 3 * sign(z)) ** (1 / l)),
-                   sd23 = sign(z) * (sd3 - m * ((1 + l * s * 2 * sign(z)) ** (1 / l))),
-                   z = ifelse(abs(z > 3),
-                              3 * sign(z) + ((y - sd3) / sd23),
-                              z))
+            dplyr::mutate(sd3 = m * ((1 + l * s * 3 * sign(z)) ** (1 / l)),
+                          sd23 = sign(z) * (sd3 - m * ((1 + l * s * 2 * sign(z)) ** (1 / l))),
+                          z = ifelse(abs(z > 3),
+                                     3 * sign(z) + ((y - sd3) / sd23),
+                                     z))
     }
 
     z <- dat$z[match(y, dat$y)] # to ensure output in same order as input
