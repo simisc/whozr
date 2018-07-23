@@ -4,7 +4,7 @@
 #'   growth references (5-10 years).
 #' @export
 #' @param weight Weight (kg)
-#' @param x Age (days)
+#' @param age Age (days)
 #' @param sex Sex, coded as "F" and "M"
 #' @param trim_extreme_z Replace extreme scores (ZWA > 5 or ZWA < -6), described
 #'   as biologically implausible by WHO, with \code{NA}.
@@ -25,7 +25,7 @@ zwa <- function(weight, age, sex, trim_extreme_z = FALSE) {
 #' @export
 #' @param height Height (cm), measured recumbent up to 2 years (day 730) and
 #'   standing thereafter, as recommended by WHO.
-#' @param x Age (days)
+#' @param age Age (days)
 #' @param sex Sex, coded as "F" and "M"
 #' @param trim_extreme_z Replace extreme scores (ZHA > 6 or ZHA < -6), described
 #'   as biologically implausible by WHO, with \code{NA}.
@@ -83,7 +83,7 @@ zwl <- function(weight, length, sex, trim_extreme_z = FALSE) {
 #'   growth references (5-19 years).
 #' @export
 #' @param bmi BMI
-#' @param x Age (days)
+#' @param age Age (days)
 #' @param sex Sex, coded as "F" and "M"
 #' @param trim_extreme_z Replace extreme scores (ZBA > 5 or ZBA < -5), described
 #'   as biologically implausible by WHO, with \code{NA}.
@@ -189,7 +189,8 @@ zssa <- function(subscap, age, sex, trim_extreme_z = FALSE) {
 #' @return A vector of \code{y}-for-\code{x} z-scores
 whozr <- function(y, x, sex, ref, adjust_large_z = FALSE) {
 
-    dat <- tibble::tibble(sex = sex, x = x, y = y)
+    dat <- tibble::tibble(sex = as.character(sex), x = x, y = y) %>%
+        mutate(index = row_number())
 
     dat <- ref %>%
         dplyr::full_join(dat, by = c("sex", "x")) %>%
@@ -200,15 +201,16 @@ whozr <- function(y, x, sex, ref, adjust_large_z = FALSE) {
                       z = ifelse(abs(l) >= 0.01,
                                  (((y / m) ^ l) - 1) / (l * s),
                                  log(y / m) / s)) %>%
-        dplyr::semi_join(dat, by = c("sex", "x", "y"))
+        dplyr::semi_join(dat, by = c("sex", "x", "y", "index")) %>%
+        arrange(index)
 
     if (adjust_large_z) {
         # WHO "macro" includes the following, but not Tim's papers. Where is this from?
         # Only for WAZ, BAZ, ACAZ, TCAZ, WHZ, SSAZ (soft). Do not use for HAZ, HCAZ (boney).
         dat <- dat %>%
-            dplyr::mutate(sd3 = m * ((1 + l * s * 3 * sign(z)) ** (1 / l)),
-                          sd23 = sign(z) * (sd3 - m * ((1 + l * s * 2 * sign(z)) ** (1 / l))),
-                          z = ifelse(abs(z > 3),
+            dplyr::mutate(sd3 = m * ((1 + l * s * 3 * sign(z)) ^ (1 / l)),
+                          sd23 = sign(z) * (sd3 - m * ((1 + l * s * 2 * sign(z)) ^ (1 / l))),
+                          z = ifelse(abs(z) > 3,
                                      3 * sign(z) + ((y - sd3) / sd23),
                                      z))
     }
@@ -217,8 +219,7 @@ whozr <- function(y, x, sex, ref, adjust_large_z = FALSE) {
     # y <- m * (z * l * s + 1) ^ (1 / l)
     # y[small] <- m[small] * exp(z[small] * s[small])
 
-    z <- dat$z[match(y, dat$y)] # to ensure output in same order as input
-    return(z)
+    return(dat$z)
 }
 
 #' Format summaries for tables

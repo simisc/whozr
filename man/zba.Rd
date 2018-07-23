@@ -9,12 +9,12 @@ zba(bmi, age, sex, trim_extreme_z = FALSE)
 \arguments{
 \item{bmi}{BMI}
 
+\item{age}{Age (days)}
+
 \item{sex}{Sex, coded as "F" and "M"}
 
 \item{trim_extreme_z}{Replace extreme scores (ZBA > 5 or ZBA < -5), described
 as biologically implausible by WHO, with \code{NA}.}
-
-\item{x}{Age (days)}
 }
 \value{
 A vector of BMI-for-age z-scores
