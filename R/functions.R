@@ -1,50 +1,105 @@
-zha <- function(height, age, sex, trim_extreme_z = FALSE) {
-
-    rha <- NA # How to access reference data from sysdat.rda?
-
-    z <- whozr(y = height, x = age, sex = sex, ref = rha, adjust_large_z = FALSE)
-
-    if (trim) {
-        flag <- abs(z) - 0.5 > 5 # CHECK CUTOFFS
+zwa <- function(weight, age, sex, trim_extreme_z = FALSE) {
+    z <- whozr(y = weight, x = age, sex = sex, ref = rwa, adjust_large_z = TRUE)
+    if (trim_extreme_z) {
+        flag <- (z < -6) | (z > 5)
         z[flag] <- NA
     }
-
     return(z)
 }
 
-# How make ?whz and ?wlz point to same documentation
+zha <- function(height, age, sex, trim_extreme_z = FALSE) {
+    z <- whozr(y = height, x = age, sex = sex, ref = rha, adjust_large_z = FALSE)
+    if (trim_extreme_z) {
+        flag <- abs(z) > 6
+        z[flag] <- NA
+    }
+    return(z)
+}
 
-## Make separate script in data-raw directory to show how constructed own ref data
-# WHO references coded 1 for males, 2 for females, mine "M", "F"
-# Be careful with L or H choices. Are non-default versions included in main reference?
+zwh <- function(weight, height, sex, trim_extreme_z = FALSE) {
+    z <- whozr(y = weight, x = height, sex = sex, ref = rwh, adjust_large_z = TRUE)
+    if (trim_extreme_z) {
+        flag <- abs(z) > 5
+        z[flag] <- NA
+    }
+    return(z)
+}
+
+zwl <- function(weight, length, sex, trim_extreme_z = FALSE) {
+    z <- whozr(y = weight, x = length, sex = sex, ref = rwl, adjust_large_z = TRUE)
+    if (trim_extreme_z) {
+        flag <- abs(z) > 5
+        z[flag] <- NA
+    }
+    return(z)
+}
+
+zba <- function(bmi, age, sex, trim_extreme_z = FALSE) {
+    z <- whozr(y = bmi, x = age, sex = sex, ref = rba, adjust_large_z = TRUE)
+    if (trim_extreme_z) {
+        flag <- abs(z) > 5
+        z[flag] <- NA
+    }
+    return(z)
+}
+
+zhca <- function(headc, age, sex, trim_extreme_z = FALSE) {
+    z <- whozr(y = headc, x = age, sex = sex, ref = rhca, adjust_large_z = FALSE)
+    if (trim_extreme_z) {
+        flag <- abs(z) > 5
+        z[flag] <- NA
+    }
+    return(z)
+}
+
+zaca <- function(muac, age, sex, trim_extreme_z = FALSE) {
+    z <- whozr(y = muac, x = age, sex = sex, ref = raca, adjust_large_z = TRUE)
+    if (trim_extreme_z) {
+        flag <- abs(z) > 5
+        z[flag] <- NA
+    }
+    return(z)
+}
+
+ztsa <- function(tricep, age, sex, trim_extreme_z = FALSE) {
+    z <- whozr(y = tricep, x = age, sex = sex, ref = rtsa, adjust_large_z = TRUE)
+    if (trim_extreme_z) {
+        flag <- abs(z) > 5
+        z[flag] <- NA
+    }
+    return(z)
+}
+
+zssa <- function(subscap, age, sex, trim_extreme_z = FALSE) {
+    z <- whozr(y = subscap, x = age, sex = sex, ref = rssa, adjust_large_z = TRUE)
+    if (trim_extreme_z) {
+        flag <- abs(z) > 5
+        z[flag] <- NA
+    }
+    return(z)
+}
 
 whozr <- function(y, x, sex, ref, adjust_large_z = FALSE) {
 
     # x: age in DAYS (or height for whz)
-    # dpm <- 365.2425 * 12
     # y: outcome
 
-    ## Test this before writing wrappers for each outcome
-    ## Name wrapper functions zha, zwh, zaca, zba, etc.
-    ## Name reference data rha, rwh, raca, rba, etc.
+    dat <- tibble(sex = sex, x = x, y = y)
 
     dat <- ref %>%
-        outer_join(
-            tibble(sex = sex, x = x, y = y, out = 1)
-        ) %>%
+        full_join(dat, by = c("sex", "x")) %>%
         group_by(sex) %>%
         mutate(l = approx(x, l, x)$y,
                m = approx(x, m, x)$y,
-               s = approx(x, s, x)$y) %>%
-        ungroup() %>%
-        filter(!is.na(out)) %>%
-        mutate(z = ifelse(abs(l) >= 0.01,
+               s = approx(x, s, x)$y,
+               z = ifelse(abs(l) >= 0.01,
                           (((y / m) ^ l) - 1) / (l * s),
-                          log(y / m) / s))
+                          log(y / m) / s)) %>%
+        semi_join(dat, by = c("sex", "x", "y"))
 
     if (adjust_large_z) {
         # WHO "macro" includes the following, but not Tim's papers. Where is this from?
-        # Only for WAZ, BAZ, ACAZ, TCAZ, WHZ (soft). Do not use for HAZ, HCAZ (boney).
+        # Only for WAZ, BAZ, ACAZ, TCAZ, WHZ, SSAZ (soft). Do not use for HAZ, HCAZ (boney).
         dat <- dat %>%
             mutate(sd3 = m * ((1 + l * s * 3 * sign(z)) ** (1 / l)),
                    sd23 = sign(z) * (sd3 - m * ((1 + l * s * 2 * sign(z)) ** (1 / l))),
@@ -52,7 +107,9 @@ whozr <- function(y, x, sex, ref, adjust_large_z = FALSE) {
                               3 * sign(z) + ((y - sd3) / sd23),
                               z))
     }
-    return(dat$z)
+
+    z <- dat$z[match(y, dat$y)] # to ensure output in same order as input
+    return(z)
 }
 
 ## Converting from z to raw
