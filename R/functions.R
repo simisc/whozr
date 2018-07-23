@@ -179,7 +179,17 @@ zssa <- function(subscap, age, sex, trim_extreme_z = FALSE) {
 #'   growth standards (0-5 years) and WHO growth references (5-19 years): see
 #'   \code{\link{zwa}}, \code{\link{zha}}, \code{\link{zwh}}, \code{\link{zwl}},
 #'   \code{\link{zba}}, \code{\link{zhca}}, \code{\link{zaca}}, \code{\link{ztsa}},
-#'   \code{\link{zssa}}
+#'   \code{\link{zssa}}.
+#'
+#' Cole, TJ (1990) The LMS method for constructing normalized growth standards.
+#'   \emph{European Journal of Clinical Nutrition} 44(1), 45-60.
+#'
+#' WHO Multicentre Growth Reference Study Group (2006) WHO Child Growth Standards
+#'   based on length/height, weight and age. \emph{Acta Paediatrica} 95(S450), 76-85.
+#'
+#' de Onis et al. (2007) Development of a WHO growth reference for school-aged
+#'   children and adolescents. \emph{Bulletin of the World Health Organization}
+#'   85(9), 660-667.
 #' @export
 #' @param y Outcome veariable
 #' @param x Predictor, typically age
