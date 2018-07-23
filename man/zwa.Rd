@@ -9,12 +9,12 @@ zwa(weight, age, sex, trim_extreme_z = FALSE)
 \arguments{
 \item{weight}{Weight (kg)}
 
+\item{age}{Age (days)}
+
 \item{sex}{Sex, coded as "F" and "M"}
 
 \item{trim_extreme_z}{Replace extreme scores (ZWA > 5 or ZWA < -6), described
 as biologically implausible by WHO, with \code{NA}.}
-
-\item{x}{Age (days)}
 }
 \value{
 A vector of weight-for-age z-scores
