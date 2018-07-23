@@ -7,14 +7,14 @@
 zssa(subscap, age, sex, trim_extreme_z = FALSE)
 }
 \arguments{
+\item{subscap}{Subscapular skinfold thickness (mm)}
+
 \item{age}{Age (days)}
 
 \item{sex}{Sex, coded as "F" and "M"}
 
-\item{trim_extreme_z}{Replace extreme scores (ZMA > 5 or ZMA < -5), described
+\item{trim_extreme_z}{Replace extreme scores (ZSSA > 5 or ZSSA < -5), described
 as biologically implausible by WHO, with \code{NA}.}
-
-\item{tricep}{Subscapular skinfold thickness (mm)}
 }
 \value{
 A vector of subscapular skinfold thickness-for-length z-scores

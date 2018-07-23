@@ -13,7 +13,7 @@ ztsa(tricep, age, sex, trim_extreme_z = FALSE)
 
 \item{sex}{Sex, coded as "F" and "M"}
 
-\item{trim_extreme_z}{Replace extreme scores (ZMA > 5 or ZMA < -5), described
+\item{trim_extreme_z}{Replace extreme scores (ZTSA > 5 or ZTSA < -5), described
 as biologically implausible by WHO, with \code{NA}.}
 }
 \value{

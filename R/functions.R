@@ -142,7 +142,7 @@ zma <- function(muac, age, sex, trim_extreme_z = FALSE) {
 #' @param tricep Tricep skinfold thickness (mm)
 #' @param age Age (days)
 #' @param sex Sex, coded as "F" and "M"
-#' @param trim_extreme_z Replace extreme scores (ZMA > 5 or ZMA < -5), described
+#' @param trim_extreme_z Replace extreme scores (ZTSA > 5 or ZTSA < -5), described
 #'   as biologically implausible by WHO, with \code{NA}.
 #' @return A vector of tricep skinfold thickness-for-length z-scores
 ztsa <- function(tricep, age, sex, trim_extreme_z = FALSE) {
@@ -158,10 +158,10 @@ ztsa <- function(tricep, age, sex, trim_extreme_z = FALSE) {
 #'
 #' Calculate z-scores using with the WHO growth standards (0-5 years).
 #' @export
-#' @param tricep Subscapular skinfold thickness (mm)
+#' @param subscap Subscapular skinfold thickness (mm)
 #' @param age Age (days)
 #' @param sex Sex, coded as "F" and "M"
-#' @param trim_extreme_z Replace extreme scores (ZMA > 5 or ZMA < -5), described
+#' @param trim_extreme_z Replace extreme scores (ZSSA > 5 or ZSSA < -5), described
 #'   as biologically implausible by WHO, with \code{NA}.
 #' @return A vector of subscapular skinfold thickness-for-length z-scores
 zssa <- function(subscap, age, sex, trim_extreme_z = FALSE) {

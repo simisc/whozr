@@ -3,10 +3,10 @@ Type: Package
 Title: Convert Raw Anthrops to WHO Z-Scores
 Version: 0.1.0
 Author: Simon Schoenbuchner
-Description: Convert between raw anthropometric measurement (weight, height,
-    length, etc) and z-scores, using the WHO growth references for 0-5 and 5-19
-    year-olds. Contains functions for calculating z-scores (or reversing to
-    anthrops), rounding numbers, and formatting output for tables.
+Description: Convert raw anthropometric measurement (weight, height, length,
+    BMI, MUAC, head circumeference, tricep skinfold and subscapular skinfold)
+    to z-scores, using the WHO growth standards (0-5 years) and/or references
+    (5-19 years).
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
