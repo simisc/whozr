@@ -39,6 +39,24 @@ zha <- function(height, age, sex, trim_extreme_z = FALSE) {
     return(z)
 }
 
+#' Length-for-age z-scores
+#'
+#' Calculate z-scores using with the WHO growth standards (0-5 years) and WHO
+#'   growth references (5-19 years). This is just a around \code{\link{zha}}:
+#'   both assume that length was measured recumbent up to 2 years (day 730) and
+#'   height was measured standing from day 731 onward.
+#' @export
+#' @param length Length (cm), measured recumbent up to 2 years (day 730) and
+#'   standing thereafter, as recommended by WHO.
+#' @param age Age (days)
+#' @param sex Sex, coded as "F" and "M"
+#' @param trim_extreme_z Replace extreme scores (ZHA > 6 or ZHA < -6), described
+#'   as biologically implausible by WHO, with \code{NA}.
+#' @return A vector of height-for-age z-scores
+zla <- function(length, age, sex, trim_extreme_z = FALSE) {
+    zha(height = length, age = age, sex = sex, trim_extreme_z = trim_extreme_z)
+}
+
 #' Weight-for-height z-scores
 #'
 #' Calculate z-scores using with the WHO growth standards (0-5 years).
