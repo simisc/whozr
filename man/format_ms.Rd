@@ -25,5 +25,6 @@ A string, formatted as median (IQR) or mean (SD) with the chosen
   number of digits / significant figures, suitable for display in tables.
 }
 \description{
-Format summaries for tables
+Cole, TJ (2015) Too many digits: presentation of numerical data.
+  \emph{Archives of Disease in Childhood} 100(7), 608-609.
 }

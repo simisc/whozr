@@ -1,3 +1,12 @@
+#' Pipe
+#'
+#' Imported from \code{\link[magrittr]{pipe}}
+#' @importFrom magrittr %>%
+#' @name %>%
+#' @rdname pipe
+#' @export
+NULL
+
 #' Weight-for-age z-scores
 #'
 #' Calculate z-scores using with the WHO growth standards (0-5 years) and WHO
@@ -21,7 +30,9 @@ zwa <- function(weight, age, sex, trim_extreme_z = FALSE) {
 #' Height-for-age z-scores
 #'
 #' Calculate z-scores using with the WHO growth standards (0-5 years) and WHO
-#'   growth references (5-19 years).
+#'   growth references (5-19 years). Like its alias \code{\link{zla}}:
+#'   both assume that length was measured recumbent up to 2 years (day 730) and
+#'   height was measured standing from day 731 onward.
 #' @export
 #' @param height Height (cm), measured recumbent up to 2 years (day 730) and
 #'   standing thereafter, as recommended by WHO.
@@ -42,7 +53,7 @@ zha <- function(height, age, sex, trim_extreme_z = FALSE) {
 #' Length-for-age z-scores
 #'
 #' Calculate z-scores using with the WHO growth standards (0-5 years) and WHO
-#'   growth references (5-19 years). This is just a around \code{\link{zha}}:
+#'   growth references (5-19 years). This is just an alias for \code{\link{zha}}:
 #'   both assume that length was measured recumbent up to 2 years (day 730) and
 #'   height was measured standing from day 731 onward.
 #' @export
@@ -53,8 +64,8 @@ zha <- function(height, age, sex, trim_extreme_z = FALSE) {
 #' @param trim_extreme_z Replace extreme scores (ZHA > 6 or ZHA < -6), described
 #'   as biologically implausible by WHO, with \code{NA}.
 #' @return A vector of height-for-age z-scores
-zla <- function(length, age, sex, trim_extreme_z = FALSE) {
-    zha(height = length, age = age, sex = sex, trim_extreme_z = trim_extreme_z)
+zla <- function(length, ...) {
+    zha(height = length, ...)
 }
 
 #' Weight-for-height z-scores
@@ -218,7 +229,7 @@ zssa <- function(subscap, age, sex, trim_extreme_z = FALSE) {
 whozr <- function(y, x, sex, ref, adjust_large_z = FALSE) {
 
     dat <- tibble::tibble(sex = as.character(sex), x = x, y = y) %>%
-        mutate(index = row_number())
+        dplyr::mutate(index = dplyr::row_number())
 
     dat <- ref %>%
         dplyr::full_join(dat, by = c("sex", "x")) %>%
@@ -230,7 +241,7 @@ whozr <- function(y, x, sex, ref, adjust_large_z = FALSE) {
                                  (((y / m) ^ l) - 1) / (l * s),
                                  log(y / m) / s)) %>%
         dplyr::semi_join(dat, by = c("sex", "x", "y", "index")) %>%
-        arrange(index)
+        dplyr::arrange(index)
 
     if (adjust_large_z) {
         # WHO "macro" includes the following, but not Tim's papers. Where is this from?
@@ -251,6 +262,9 @@ whozr <- function(y, x, sex, ref, adjust_large_z = FALSE) {
 }
 
 #' Format summaries for tables
+#'
+#' Cole, TJ (2015) Too many digits: presentation of numerical data.
+#'   \emph{Archives of Disease in Childhood} 100(7), 608-609.
 #'
 #' @export
 #' @param x Numeric vector to be summarised

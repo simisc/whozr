@@ -4,7 +4,7 @@
 \alias{zla}
 \title{Length-for-age z-scores}
 \usage{
-zla(length, age, sex, trim_extreme_z = FALSE)
+zla(length, ...)
 }
 \arguments{
 \item{length}{Length (cm), measured recumbent up to 2 years (day 730) and
@@ -22,7 +22,7 @@ A vector of height-for-age z-scores
 }
 \description{
 Calculate z-scores using with the WHO growth standards (0-5 years) and WHO
-  growth references (5-19 years). This is just a around \code{\link{zha}}:
+  growth references (5-19 years). This is just an alias for \code{\link{zha}}:
   both assume that length was measured recumbent up to 2 years (day 730) and
   height was measured standing from day 731 onward.
 }
