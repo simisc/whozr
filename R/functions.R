@@ -202,7 +202,7 @@ zssa <- function(subscap, age, sex, trim_extreme_z = FALSE) {
     return(z)
 }
 
-#' Calculate Z-scores from LMS tables
+#' Calculate z-scores from LMS tables
 #'
 #' Calculate z-scores from LMS tables. Wrappers are provided for use with the WHO
 #'   growth standards (0-5 years) and WHO growth references (5-19 years): see
@@ -225,14 +225,18 @@ zssa <- function(subscap, age, sex, trim_extreme_z = FALSE) {
 #' @param sex Sex, coded as "F" and "M"
 #' @param ref Reference data. A tibble or data.frame with columns named \code{sex},
 #'   \code{x},\code{l}, \code{m} and \code{s}
-#' @return A vector of \code{y}-for-\code{x} z-scores
+#' @param adjust_large_z Shrink large z-scores towards +/-3? This is done in the
+#'   WHO's "R macro" but not mentioned in any of the references above. Should only
+#'   be used for soft-tissue measures (WAZ, BAZ, ACAZ, TCAZ, WHZ, SSAZ), not for
+#'   hard-tissue measures (HAZ, HCAZ).
+#' @return A vector \code{z} of \code{y}-for-\code{x} z-scores
 whozr <- function(y, x, sex, ref, adjust_large_z = FALSE) {
 
-    dat <- tibble::tibble(sex = as.character(sex), x = x, y = y) %>%
+    indat <- tibble::tibble(sex = as.character(sex), x = x, y = y) %>%
         dplyr::mutate(index = dplyr::row_number())
 
     dat <- ref %>%
-        dplyr::full_join(dat, by = c("sex", "x")) %>%
+        dplyr::full_join(indat, by = c("sex", "x")) %>%
         dplyr::group_by(sex) %>%
         dplyr::mutate(l = approx(x, l, x)$y,
                       m = approx(x, m, x)$y,
@@ -240,12 +244,10 @@ whozr <- function(y, x, sex, ref, adjust_large_z = FALSE) {
                       z = ifelse(abs(l) >= 0.01,
                                  (((y / m) ^ l) - 1) / (l * s),
                                  log(y / m) / s)) %>%
-        dplyr::semi_join(dat, by = c("sex", "x", "y", "index")) %>%
+        dplyr::semi_join(indat, by = c("sex", "x", "y", "index")) %>%
         dplyr::arrange(index)
 
     if (adjust_large_z) {
-        # WHO "macro" includes the following, but not Tim's papers. Where is this from?
-        # Only for WAZ, BAZ, ACAZ, TCAZ, WHZ, SSAZ (soft). Do not use for HAZ, HCAZ (boney).
         dat <- dat %>%
             dplyr::mutate(sd3 = m * ((1 + l * s * 3 * sign(z)) ^ (1 / l)),
                           sd23 = sign(z) * (sd3 - m * ((1 + l * s * 2 * sign(z)) ^ (1 / l))),
@@ -254,11 +256,51 @@ whozr <- function(y, x, sex, ref, adjust_large_z = FALSE) {
                                      z))
     }
 
-    ## Converting from z to raw (not currently implemented)
-    # y <- m * (z * l * s + 1) ^ (1 / l)
-    # y[small] <- m[small] * exp(z[small] * s[small])
+    dat$z
+}
 
-    return(dat$z)
+#' Reverse z-score calculation
+#'
+#' Calculate original anthropometry from z-scores and LMS tables.
+#'
+#' @export
+#' @param z z-score
+#' @param x Predictor, typically age
+#' @param sex Sex, coded as "F" and "M"
+#' @param ref Reference data. A tibble or data.frame with columns named \code{sex},
+#'   \code{x},\code{l}, \code{m} and \code{s}
+#' @param adjust_large_z Were large z-scores shrunk towards +/-3? This is done in the
+#'   WHO's "R macro" but not mentioned in any of the references cited at
+#'   \code{\link{whozr}}.Should only be used for soft-tissue measures (WAZ, BAZ,
+#'   ACAZ, TCAZ, WHZ, SSAZ), not for hard-tissue measures (HAZ, HCAZ).
+#' @return A vector \code{y} of anthropometry measures corresponding to \code{y}-for-\code{x} scores \code{z}.
+reverse_whozr <- function(z, x, sex, ref, adjust_large_z = FALSE) {
+
+    indat <- tibble::tibble(sex = as.character(sex), x = x, z = z) %>%
+        dplyr::mutate(index = dplyr::row_number())
+
+    dat <- ref %>%
+        dplyr::full_join(indat, by = c("sex", "x")) %>%
+        dplyr::group_by(sex) %>%
+        dplyr::mutate(l = approx(x, l, x)$y,
+                      m = approx(x, m, x)$y,
+                      s = approx(x, s, x)$y,
+                      y = ifelse(abs(l) >= 0.01,
+                                 m * (z * l * s + 1) ^ (1 / l),
+                                 m * exp(z * s))) %>%
+        dplyr::semi_join(indat, by = c("sex", "x", "z", "index")) %>%
+        dplyr::arrange(index)
+
+    if (adjust_large_z) {
+        dat <- dat %>%
+            dplyr::mutate(sd3 = m * ((1 + l * s * 3 * sign(z)) ^ (1 / l)),
+                          sd23 = sign(z) * (sd3 - m * ((1 + l * s * 2 * sign(z)) ^ (1 / l))),
+                          y = ifelse(abs(z) > 3,
+                                     sd23 * (z - 3 * sign(z)) + sd3,
+                                     y))
+    }
+
+    dat$y
 }
 
 #' Format summaries for tables
@@ -313,5 +355,6 @@ format_ms <- function(x,
         format <- sprintf("%s (%s)", format, format)
         out <- sprintf(format, a, s)
     }
-    return(out)
+
+    out
 }

@@ -2,6 +2,7 @@
 
 export("%>%")
 export(format_ms)
+export(reverse_whozr)
 export(whozr)
 export(zba)
 export(zha)

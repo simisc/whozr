@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions.R
 \name{whozr}
 \alias{whozr}
-\title{Calculate Z-scores from LMS tables}
+\title{Calculate z-scores from LMS tables}
 \usage{
 whozr(y, x, sex, ref, adjust_large_z = FALSE)
 }
@@ -15,9 +15,14 @@ whozr(y, x, sex, ref, adjust_large_z = FALSE)
 
 \item{ref}{Reference data. A tibble or data.frame with columns named \code{sex},
 \code{x},\code{l}, \code{m} and \code{s}}
+
+\item{adjust_large_z}{Shrink large z-scores towards +/-3? This is done in the
+WHO's "R macro" but not mentioned in any of the references above. Should only
+be used for soft-tissue measures (WAZ, BAZ, ACAZ, TCAZ, WHZ, SSAZ), not for
+hard-tissue measures (HAZ, HCAZ).}
 }
 \value{
-A vector of \code{y}-for-\code{x} z-scores
+A vector \code{z} of \code{y}-for-\code{x} z-scores
 }
 \description{
 Calculate z-scores from LMS tables. Wrappers are provided for use with the WHO
