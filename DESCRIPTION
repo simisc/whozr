@@ -2,7 +2,8 @@ Package: whozr
 Type: Package
 Title: Convert Raw Anthrops to WHO Z-Scores
 Version: 1.1.0
-Author: Simon Schoenbuchner
+Authors@R: person("Simon", "Schoenbuchner", email = "sms86@cam.ac.uk",
+  role = c("aut", "cre"))
 Description: Convert raw anthropometric measurement (weight, height, length,
     BMI, MUAC, head circumeference, tricep skinfold and subscapular skinfold)
     to z-scores, using the WHO growth standards (0-5 years) and/or references
