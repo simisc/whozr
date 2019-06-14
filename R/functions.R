@@ -59,10 +59,7 @@ zha <- function(height, age, sex, trim_extreme_z = FALSE) {
 #' @export
 #' @param length Length (cm), measured recumbent up to 2 years (day 730) and
 #'   standing thereafter, as recommended by WHO.
-#' @param age Age (days)
-#' @param sex Sex, coded as "F" and "M"
-#' @param trim_extreme_z Replace extreme scores (ZHA > 6 or ZHA < -6), described
-#'   as biologically implausible by WHO, with \code{NA}.
+#' @param ... Other arguments to \code{\link{zha}}.
 #' @return A vector of height-for-age z-scores
 zla <- function(length, ...) {
     zha(height = length, ...)
@@ -207,7 +204,7 @@ zssa <- function(subscap, age, sex, trim_extreme_z = FALSE) {
 #' Calculate z-scores from LMS tables. Wrappers are provided for use with the WHO
 #'   growth standards (0-5 years) and WHO growth references (5-19 years): see
 #'   \code{\link{zwa}}, \code{\link{zha}}, \code{\link{zwh}}, \code{\link{zwl}},
-#'   \code{\link{zba}}, \code{\link{zhca}}, \code{\link{zaca}}, \code{\link{ztsa}},
+#'   \code{\link{zba}}, \code{\link{zhca}}, \code{\link{zma}}, \code{\link{ztsa}},
 #'   \code{\link{zssa}}.
 #'
 #' Cole, TJ (1990) The LMS method for constructing normalized growth standards.

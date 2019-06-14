@@ -8,6 +8,7 @@ Description: Convert raw anthropometric measurement (weight, height, length,
     BMI, MUAC, head circumeference, tricep skinfold and subscapular skinfold)
     to z-scores, using the WHO growth standards (0-5 years) and/or references
     (5-19 years).
+Depends: R (>= 2.10)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

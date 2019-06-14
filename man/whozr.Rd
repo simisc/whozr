@@ -28,7 +28,7 @@ A vector \code{z} of \code{y}-for-\code{x} z-scores
 Calculate z-scores from LMS tables. Wrappers are provided for use with the WHO
   growth standards (0-5 years) and WHO growth references (5-19 years): see
   \code{\link{zwa}}, \code{\link{zha}}, \code{\link{zwh}}, \code{\link{zwl}},
-  \code{\link{zba}}, \code{\link{zhca}}, \code{\link{zaca}}, \code{\link{ztsa}},
+  \code{\link{zba}}, \code{\link{zhca}}, \code{\link{zma}}, \code{\link{ztsa}},
   \code{\link{zssa}}.
 }
 \details{

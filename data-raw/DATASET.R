@@ -1,7 +1,6 @@
 # WHO 2007 (ages 5-19 years) standards
 # igrowup (ages 0-5 years) reference
 
-rm(list = ls())
 library(tidyverse)
 
 rawdir <- "./data-raw/"
@@ -30,30 +29,24 @@ names(data)
 dpm <- 365.2425 / 12
 
 # Height
-rha <- bind_rows(
-    data$lenanthro %>%
-        dplyr::select(-pos),
-    data$hfawho2007 %>%
-        mutate(x = x * dpm)
-    ) %>%
+rha <- bind_rows(data$lenanthro %>%
+                     dplyr::select(-pos),
+                 data$hfawho2007 %>%
+                     mutate(x = x * dpm)) %>%
     arrange(sex, x)
 
 
 # Weight
-rwa <- bind_rows(
-    data$weianthro,
-    data$wfawho2007 %>%
-        mutate(x = x * dpm)
-    ) %>%
+rwa <- bind_rows(data$weianthro,
+                 data$wfawho2007 %>%
+                     mutate(x = x * dpm)) %>%
     arrange(sex, x)
 
 # BMI
-rba <- bind_rows(
-    data$bmianthro %>%
-        dplyr::select(-pos),
-    data$bfawho2007 %>%
-        mutate(x = x * dpm)
-    ) %>%
+rba <- bind_rows(data$bmianthro %>%
+                     dplyr::select(-pos),
+                 data$bfawho2007 %>%
+                     mutate(x = x * dpm)) %>%
     arrange(sex, x)
 
 raca <- data$acanthro # MUAC for age
@@ -65,15 +58,13 @@ rwh <- data$wfhanthro %>% # Weight for HEIGHT
 rwl <- data$wflanthro %>% # Weight for LENGTH
     dplyr::select(-pos)
 
-devtools::use_data(
-    raca,
-    rba,
-    rha,
-    rhca,
-    rssa,
-    rtsa,
-    rwa,
-    rwh,
-    rwl,
-    internal = TRUE
-)
+usethis::use_data(raca,
+                  rba,
+                  rha,
+                  rhca,
+                  rssa,
+                  rtsa,
+                  rwa,
+                  rwh,
+                  rwl,
+                  internal = TRUE)

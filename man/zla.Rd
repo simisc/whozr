@@ -10,12 +10,7 @@ zla(length, ...)
 \item{length}{Length (cm), measured recumbent up to 2 years (day 730) and
 standing thereafter, as recommended by WHO.}
 
-\item{age}{Age (days)}
-
-\item{sex}{Sex, coded as "F" and "M"}
-
-\item{trim_extreme_z}{Replace extreme scores (ZHA > 6 or ZHA < -6), described
-as biologically implausible by WHO, with \code{NA}.}
+\item{...}{Other arguments to \code{\link{zha}}.}
 }
 \value{
 A vector of height-for-age z-scores
