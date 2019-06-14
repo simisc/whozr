@@ -235,9 +235,9 @@ whozr <- function(y, x, sex, ref, adjust_large_z = FALSE) {
     dat <- ref %>%
         dplyr::full_join(indat, by = c("sex", "x")) %>%
         dplyr::group_by(sex) %>%
-        dplyr::mutate(l = approx(x, l, x)$y,
-                      m = approx(x, m, x)$y,
-                      s = approx(x, s, x)$y,
+        dplyr::mutate(l = stats::approx(x, l, x)$y,
+                      m = stats::approx(x, m, x)$y,
+                      s = stats::approx(x, s, x)$y,
                       z = ifelse(abs(l) >= 0.01,
                                  (((y / m) ^ l) - 1) / (l * s),
                                  log(y / m) / s)) %>%
@@ -279,9 +279,9 @@ reverse_whozr <- function(z, x, sex, ref, adjust_large_z = FALSE) {
     dat <- ref %>%
         dplyr::full_join(indat, by = c("sex", "x")) %>%
         dplyr::group_by(sex) %>%
-        dplyr::mutate(l = approx(x, l, x)$y,
-                      m = approx(x, m, x)$y,
-                      s = approx(x, s, x)$y,
+        dplyr::mutate(l = stats::approx(x, l, x)$y,
+                      m = stats::approx(x, m, x)$y,
+                      s = stats::approx(x, s, x)$y,
                       y = ifelse(abs(l) >= 0.01,
                                  m * (z * l * s + 1) ^ (1 / l),
                                  m * exp(z * s))) %>%
@@ -327,11 +327,11 @@ format_ms <- function(x,
     # Sig fig for SD, Q1, Q3 chosen as per Tim's sig fig paper.
 
     if (use_quantiles) {
-        a <- median(x, na.rm = TRUE)
-        s <- quantile(x, probs = c(0.25, 0.75), na.rm = TRUE)
+        a <- stats::median(x, na.rm = TRUE)
+        s <- stats::quantile(x, probs = c(0.25, 0.75), na.rm = TRUE)
     } else {
         a <- mean(x, na.rm = TRUE)
-        s <- sd(x, na.rm = TRUE)
+        s <- stats::sd(x, na.rm = TRUE)
     }
 
     if (sigfig) {
@@ -355,3 +355,7 @@ format_ms <- function(x,
 
     out
 }
+
+
+# to appease R CMD check
+utils::globalVariables(c("l", "m", "s", "index", "sd23", "sd3", "y", "z"))
