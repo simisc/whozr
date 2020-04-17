@@ -29,18 +29,14 @@ library(whozr) # zwa(), zla(), zwl()
 ```
 
 ``` r
-anthro <- tibble(
-    sex = c("F", "M", "M", "F"),
-    age_days = c(120, 310, 370, 460),
-    weight_kg = c(5.98, 8.09, 8.40, 8.46),
-    length_cm = c(60.2, 70.7, 72.6, 74.9)
-    ) %>%
-    mutate(
-        waz = zwa(weight_kg, age_days, sex),
-        laz = zla(length_cm, age_days, sex),
-        wlz = zwl(weight_kg, length_cm, sex)
-        )
-kable(anthro, digits = 3)
+tibble(sex = c("F", "M", "M", "F"),
+       age_days = c(120, 310, 370, 460),
+       weight_kg = c(5.98, 8.09, 8.40, 8.46),
+       length_cm = c(60.2, 70.7, 72.6, 74.9)) %>%
+    mutate(waz = zwa(weight_kg, age_days, sex),
+           laz = zla(length_cm, age_days, sex),
+           wlz = zwl(weight_kg, length_cm, sex)) %>%
+    kable(digits = 3)
 ```
 
 | sex |  age\_days|  weight\_kg|  length\_cm|     waz|     laz|     wlz|
