@@ -1,16 +1,21 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-whozr
-=====
 
-[![Build Status](https://travis-ci.com/simisc/whozr.svg?branch=master)](https://travis-ci.com/simisc/whozr)
+# whozr
 
-Convert raw anthropometric measurement (weight, height, length, BMI, MUAC, head circumeference, tricep skinfold and subscapular skinfold) to z-scores, using the WHO growth standards (0-5 years) and/or references (5-19 years).
+[![Build
+Status](https://travis-ci.com/simisc/whozr.svg?branch=master)](https://travis-ci.com/simisc/whozr)
+[![DOI](https://zenodo.org/badge/113995327.svg)](https://zenodo.org/badge/latestdoi/113995327)
 
-Also allows the 'reverse' calculation of original anthropometry measures from z-scores (requires further testing).
+Convert raw anthropometric measurement (weight, height, length, BMI,
+MUAC, head circumeference, tricep skinfold and subscapular skinfold) to
+z-scores, using the WHO growth standards (0-5 years) and/or references
+(5-19 years).
 
-Installation
-------------
+Also allows the ‘reverse’ calculation of original anthropometry measures
+from z-scores (requires further testing).
+
+## Installation
 
 You can install whozr from github with:
 
@@ -19,8 +24,7 @@ You can install whozr from github with:
 devtools::install_github("simisc/whozr")
 ```
 
-Example
--------
+## Example
 
 ``` r
 library(dplyr) # tibble(), %>%, mutate()
@@ -39,9 +43,9 @@ tibble(sex = c("F", "M", "M", "F"),
     kable(digits = 3)
 ```
 
-| sex |  age\_days|  weight\_kg|  length\_cm|     waz|     laz|     wlz|
-|:----|----------:|-----------:|-----------:|-------:|-------:|-------:|
-| F   |        120|        5.98|        60.2|  -0.539|  -0.818|   0.101|
-| M   |        310|        8.09|        70.7|  -1.186|  -1.229|  -0.723|
-| M   |        370|        8.40|        72.6|  -1.296|  -1.398|  -0.846|
-| F   |        460|        8.46|        74.9|  -1.065|  -0.996|  -0.859|
+| sex | age\_days | weight\_kg | length\_cm |     waz |     laz |     wlz |
+| :-- | --------: | ---------: | ---------: | ------: | ------: | ------: |
+| F   |       120 |       5.98 |       60.2 | \-0.539 | \-0.818 |   0.101 |
+| M   |       310 |       8.09 |       70.7 | \-1.186 | \-1.229 | \-0.723 |
+| M   |       370 |       8.40 |       72.6 | \-1.296 | \-1.398 | \-0.846 |
+| F   |       460 |       8.46 |       74.9 | \-1.065 | \-0.996 | \-0.859 |
