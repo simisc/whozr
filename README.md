@@ -3,12 +3,11 @@
 
 # whozr
 
-<!-- badges: start --> [![R build
+[![R build
 status](https://github.com/simisc/whozr/workflows/R-CMD-check/badge.svg)](https://github.com/simisc/whozr/actions)
 [![DOI](https://zenodo.org/badge/113995327.svg)](https://zenodo.org/badge/latestdoi/113995327)
 [![Licence](https://img.shields.io/github/license/simisc/whozr)](https://github.com/simisc/whozr/blob/master/LICENSE)
 [![Lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
-<!-- badges: end -->
 
 Convert raw anthropometric measurement (weight, height, length, BMI,
 MUAC, head circumeference, tricep skinfold and subscapular skinfold) to
