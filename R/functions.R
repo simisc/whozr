@@ -222,9 +222,7 @@ whozr <- function(y, x, sex, ref, adjust_large_z = FALSE) {
             s = stats::approx(.data$x, .data$s, .data$x)$y,
             z = ifelse(
                 abs(.data$l) >= 0.01,
-                (((
-                    .data$y / .data$m
-                ) ^ .data$l) - 1) / (.data$l * .data$s),
+                (((.data$y / .data$m) ^ .data$l) - 1) / (.data$l * .data$s),
                 log(.data$y / .data$m) / .data$s
             )
         ) %>%
@@ -234,11 +232,8 @@ whozr <- function(y, x, sex, ref, adjust_large_z = FALSE) {
     if (adjust_large_z) {
         dat <- dat %>%
             dplyr::mutate(
-                sd3 = .data$m * ((
-                    1 + .data$l * .data$s * 3 * sign(.data$z)
-                ) ^ (1 / .data$l)),
-                sd23 = sign(.data$z) * (.data$sd3 - .data$m * ((1 + .data$l * .data$s * 2 * sign(.data$z)) ^ (1 / .data$l)
-                )),
+                sd3 = .data$m * ((1 + .data$l * .data$s * 3 * sign(.data$z)) ^ (1 / .data$l)),
+                sd23 = sign(.data$z) * (.data$sd3 - .data$m * ((1 + .data$l * .data$s * 2 * sign(.data$z)) ^ (1 / .data$l))),
                 z = ifelse(
                     abs(.data$z) > 3,
                     3 * sign(.data$z) + ((.data$y - .data$sd3) / .data$sd23),
@@ -288,11 +283,8 @@ reverse_whozr <- function(z, x, sex, ref, adjust_large_z = FALSE) {
     if (adjust_large_z) {
         dat <- dat %>%
             dplyr::mutate(
-                sd3 = .data$m * ((
-                    1 + .data$l * .data$s * 3 * sign(.data$z)
-                ) ^ (1 / .data$l)),
-                sd23 = sign(.data$z) * (.data$sd3 - .data$m * ((1 + .data$l * .data$s * 2 * sign(.data$z)) ^ (1 / .data$l)
-                )),
+                sd3 = .data$m * ((1 + .data$l * .data$s * 3 * sign(.data$z)) ^ (1 / .data$l)),
+                sd23 = sign(.data$z) * (.data$sd3 - .data$m * ((1 + .data$l * .data$s * 2 * sign(.data$z)) ^ (1 / .data$l))),
                 y = ifelse(
                     abs(.data$z) > 3,
                     .data$sd23 * (.data$z - 3 * sign(.data$z)) + .data$sd3,
