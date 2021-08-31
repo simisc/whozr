@@ -20,10 +20,7 @@ NULL
 #' @return A vector of weight-for-age z-scores
 zwa <- function(weight, age, sex, trim_extreme_z = FALSE) {
     z <- whozr(y = weight, x = age, sex = sex, ref = rwa, adjust_large_z = TRUE)
-    if (trim_extreme_z) {
-        flag <- (z < -6) | (z > 5)
-        z[flag] <- NA
-    }
+    trim_extreme_z && {z[(z < -6) | (z > 5)] <- NA}
     return(z)
 }
 
@@ -43,10 +40,7 @@ zwa <- function(weight, age, sex, trim_extreme_z = FALSE) {
 #' @return A vector of height-for-age z-scores
 zha <- function(height, age, sex, trim_extreme_z = FALSE) {
     z <- whozr(y = height, x = age, sex = sex, ref = rha, adjust_large_z = FALSE)
-    if (trim_extreme_z) {
-        flag <- abs(z) > 6
-        z[flag] <- NA
-    }
+    trim_extreme_z && {z[abs(z) > 6] <- NA}
     return(z)
 }
 
@@ -77,10 +71,7 @@ zla <- function(length, ...) {
 #' @return A vector of weight-for-height z-scores
 zwh <- function(weight, height, sex, trim_extreme_z = FALSE) {
     z <- whozr(y = weight, x = height, sex = sex, ref = rwh, adjust_large_z = TRUE)
-    if (trim_extreme_z) {
-        flag <- abs(z) > 5
-        z[flag] <- NA
-    }
+    trim_extreme_z && {z[abs(z) > 5] <- NA}
     return(z)
 }
 
@@ -96,10 +87,7 @@ zwh <- function(weight, height, sex, trim_extreme_z = FALSE) {
 #' @return A vector of weight-for-length z-scores
 zwl <- function(weight, length, sex, trim_extreme_z = FALSE) {
     z <- whozr(y = weight, x = length, sex = sex, ref = rwl, adjust_large_z = TRUE)
-    if (trim_extreme_z) {
-        flag <- abs(z) > 5
-        z[flag] <- NA
-    }
+    trim_extreme_z && {z[abs(z) > 5] <- NA}
     return(z)
 }
 
@@ -116,10 +104,7 @@ zwl <- function(weight, length, sex, trim_extreme_z = FALSE) {
 #' @return A vector of BMI-for-age z-scores
 zba <- function(bmi, age, sex, trim_extreme_z = FALSE) {
     z <- whozr(y = bmi, x = age, sex = sex, ref = rba, adjust_large_z = TRUE)
-    if (trim_extreme_z) {
-        flag <- abs(z) > 5
-        z[flag] <- NA
-    }
+    trim_extreme_z && {z[abs(z) > 5] <- NA}
     return(z)
 }
 
@@ -135,10 +120,7 @@ zba <- function(bmi, age, sex, trim_extreme_z = FALSE) {
 #' @return A vector of head circumference-for-length z-scores
 zhca <- function(headc, age, sex, trim_extreme_z = FALSE) {
     z <- whozr(y = headc, x = age, sex = sex, ref = rhca, adjust_large_z = FALSE)
-    if (trim_extreme_z) {
-        flag <- abs(z) > 5
-        z[flag] <- NA
-    }
+    trim_extreme_z && {z[abs(z) > 5] <- NA}
     return(z)
 }
 
@@ -154,10 +136,7 @@ zhca <- function(headc, age, sex, trim_extreme_z = FALSE) {
 #' @return A vector of MUAC-for-length z-scores
 zma <- function(muac, age, sex, trim_extreme_z = FALSE) {
     z <- whozr(y = muac, x = age, sex = sex, ref = raca, adjust_large_z = TRUE)
-    if (trim_extreme_z) {
-        flag <- abs(z) > 5
-        z[flag] <- NA
-    }
+    trim_extreme_z && {z[abs(z) > 5] <- NA}
     return(z)
 }
 
@@ -173,10 +152,7 @@ zma <- function(muac, age, sex, trim_extreme_z = FALSE) {
 #' @return A vector of tricep skinfold thickness-for-length z-scores
 ztsa <- function(tricep, age, sex, trim_extreme_z = FALSE) {
     z <- whozr(y = tricep, x = age, sex = sex, ref = rtsa, adjust_large_z = TRUE)
-    if (trim_extreme_z) {
-        flag <- abs(z) > 5
-        z[flag] <- NA
-    }
+    trim_extreme_z && {z[abs(z) > 5] <- NA}
     return(z)
 }
 
@@ -192,10 +168,7 @@ ztsa <- function(tricep, age, sex, trim_extreme_z = FALSE) {
 #' @return A vector of subscapular skinfold thickness-for-length z-scores
 zssa <- function(subscap, age, sex, trim_extreme_z = FALSE) {
     z <- whozr(y = subscap, x = age, sex = sex, ref = rssa, adjust_large_z = TRUE)
-    if (trim_extreme_z) {
-        flag <- abs(z) > 5
-        z[flag] <- NA
-    }
+    trim_extreme_z && {z[abs(z) > 5] <- NA}
     return(z)
 }
 
