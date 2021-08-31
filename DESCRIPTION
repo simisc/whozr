@@ -1,7 +1,7 @@
 Package: whozr
 Type: Package
 Title: Convert Raw Anthrops to WHO Z-Scores
-Version: 1.1.1
+Version: 1.1.2
 Authors@R: person("Simon", "Schoenbuchner",
   email = "sms86@cam.ac.uk",
   role = c("aut", "cre"),
@@ -15,6 +15,6 @@ License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: dplyr (>= 0.7.8), tibble (>= 1.4.2), magrittr (>= 1.5), stats, utils
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1
 Suggests: 
     testthat
