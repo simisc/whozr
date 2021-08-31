@@ -234,23 +234,23 @@ whozr <- function(y, x, sex, ref, adjust_large_z = FALSE) {
 
     dat <- ref %>%
         dplyr::full_join(indat, by = c("sex", "x")) %>%
-        dplyr::group_by(sex) %>%
-        dplyr::mutate(l = stats::approx(x, l, x)$y,
-                      m = stats::approx(x, m, x)$y,
-                      s = stats::approx(x, s, x)$y,
-                      z = ifelse(abs(l) >= 0.01,
-                                 (((y / m) ^ l) - 1) / (l * s),
-                                 log(y / m) / s)) %>%
+        dplyr::group_by_(~ sex) %>%
+        dplyr::mutate_(l = ~ stats::approx(x, l, x)$y,
+                       m = ~ stats::approx(x, m, x)$y,
+                       s = ~ stats::approx(x, s, x)$y,
+                       z = ~ ifelse(abs(l) >= 0.01,
+                                    (((y / m) ^ l) - 1) / (l * s),
+                                    log(y / m) / s)) %>%
         dplyr::semi_join(indat, by = c("sex", "x", "y", "index")) %>%
-        dplyr::arrange(index)
+        dplyr::arrange_(~ index)
 
     if (adjust_large_z) {
         dat <- dat %>%
-            dplyr::mutate(sd3 = m * ((1 + l * s * 3 * sign(z)) ^ (1 / l)),
-                          sd23 = sign(z) * (sd3 - m * ((1 + l * s * 2 * sign(z)) ^ (1 / l))),
-                          z = ifelse(abs(z) > 3,
-                                     3 * sign(z) + ((y - sd3) / sd23),
-                                     z))
+            dplyr::mutate_(sd3 = ~ m * ((1 + l * s * 3 * sign(z)) ^ (1 / l)),
+                           sd23 = ~ sign(z) * (sd3 - m * ((1 + l * s * 2 * sign(z)) ^ (1 / l))),
+                           z = ~ ifelse(abs(z) > 3,
+                                        3 * sign(z) + ((y - sd3) / sd23),
+                                        z))
     }
 
     dat$z
@@ -278,23 +278,23 @@ reverse_whozr <- function(z, x, sex, ref, adjust_large_z = FALSE) {
 
     dat <- ref %>%
         dplyr::full_join(indat, by = c("sex", "x")) %>%
-        dplyr::group_by(sex) %>%
-        dplyr::mutate(l = stats::approx(x, l, x)$y,
-                      m = stats::approx(x, m, x)$y,
-                      s = stats::approx(x, s, x)$y,
-                      y = ifelse(abs(l) >= 0.01,
-                                 m * (z * l * s + 1) ^ (1 / l),
-                                 m * exp(z * s))) %>%
+        dplyr::group_by_(~ sex) %>%
+        dplyr::mutate_(l = ~ stats::approx(x, l, x)$y,
+                       m = ~ stats::approx(x, m, x)$y,
+                       s = ~ stats::approx(x, s, x)$y,
+                       y = ~ ifelse(abs(l) >= 0.01,
+                                    m * (z * l * s + 1) ^ (1 / l),
+                                    m * exp(z * s))) %>%
         dplyr::semi_join(indat, by = c("sex", "x", "z", "index")) %>%
-        dplyr::arrange(index)
+        dplyr::arrange_(~ index)
 
     if (adjust_large_z) {
         dat <- dat %>%
-            dplyr::mutate(sd3 = m * ((1 + l * s * 3 * sign(z)) ^ (1 / l)),
-                          sd23 = sign(z) * (sd3 - m * ((1 + l * s * 2 * sign(z)) ^ (1 / l))),
-                          y = ifelse(abs(z) > 3,
-                                     sd23 * (z - 3 * sign(z)) + sd3,
-                                     y))
+            dplyr::mutate_(sd3 = ~ m * ((1 + l * s * 3 * sign(z)) ^ (1 / l)),
+                           sd23 = ~ sign(z) * (sd3 - m * ((1 + l * s * 2 * sign(z)) ^ (1 / l))),
+                           y = ~ ifelse(abs(z) > 3,
+                                        sd23 * (z - 3 * sign(z)) + sd3,
+                                        y))
     }
 
     dat$y
@@ -355,7 +355,3 @@ format_ms <- function(x,
 
     out
 }
-
-
-# to appease R CMD check
-utils::globalVariables(c("l", "m", "s", "index", "sd23", "sd3", "y", "z"))
