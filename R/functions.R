@@ -7,6 +7,15 @@
 #' @export
 NULL
 
+#' Data pronoun
+#'
+#' Imported from \code{\link[rlang]{tidyeval-data}}
+#' @importFrom rlang .data
+#' @name .data
+#' @rdname tidyeval-data
+#' @export
+NULL
+
 #' Weight-for-age z-scores
 #'
 #' Calculate z-scores using with the WHO growth standards (0-5 years) and WHO
@@ -201,29 +210,41 @@ zssa <- function(subscap, age, sex, trim_extreme_z = FALSE) {
 #'   hard-tissue measures (HAZ, HCAZ).
 #' @return A vector \code{z} of \code{y}-for-\code{x} z-scores
 whozr <- function(y, x, sex, ref, adjust_large_z = FALSE) {
-
     indat <- tibble::tibble(sex = as.character(sex), x = x, y = y) %>%
         dplyr::mutate(index = dplyr::row_number())
 
     dat <- ref %>%
         dplyr::full_join(indat, by = c("sex", "x")) %>%
-        dplyr::group_by_(~ sex) %>%
-        dplyr::mutate_(l = ~ stats::approx(x, l, x)$y,
-                       m = ~ stats::approx(x, m, x)$y,
-                       s = ~ stats::approx(x, s, x)$y,
-                       z = ~ ifelse(abs(l) >= 0.01,
-                                    (((y / m) ^ l) - 1) / (l * s),
-                                    log(y / m) / s)) %>%
+        dplyr::group_by(.data$sex) %>%
+        dplyr::mutate(
+            l = stats::approx(.data$x, .data$l, .data$x)$y,
+            m = stats::approx(.data$x, .data$m, .data$x)$y,
+            s = stats::approx(.data$x, .data$s, .data$x)$y,
+            z = ifelse(
+                abs(.data$l) >= 0.01,
+                (((
+                    .data$y / .data$m
+                ) ^ .data$l) - 1) / (.data$l * .data$s),
+                log(.data$y / .data$m) / .data$s
+            )
+        ) %>%
         dplyr::semi_join(indat, by = c("sex", "x", "y", "index")) %>%
-        dplyr::arrange_(~ index)
+        dplyr::arrange(.data$index)
 
     if (adjust_large_z) {
         dat <- dat %>%
-            dplyr::mutate_(sd3 = ~ m * ((1 + l * s * 3 * sign(z)) ^ (1 / l)),
-                           sd23 = ~ sign(z) * (sd3 - m * ((1 + l * s * 2 * sign(z)) ^ (1 / l))),
-                           z = ~ ifelse(abs(z) > 3,
-                                        3 * sign(z) + ((y - sd3) / sd23),
-                                        z))
+            dplyr::mutate(
+                sd3 = .data$m * ((
+                    1 + .data$l * .data$s * 3 * sign(.data$z)
+                ) ^ (1 / .data$l)),
+                sd23 = sign(.data$z) * (.data$sd3 - .data$m * ((1 + .data$l * .data$s * 2 * sign(.data$z)) ^ (1 / .data$l)
+                )),
+                z = ifelse(
+                    abs(.data$z) > 3,
+                    3 * sign(.data$z) + ((.data$y - .data$sd3) / .data$sd23),
+                    .data$z
+                )
+            )
     }
 
     dat$z
@@ -245,29 +266,39 @@ whozr <- function(y, x, sex, ref, adjust_large_z = FALSE) {
 #'   ACAZ, TCAZ, WHZ, SSAZ), not for hard-tissue measures (HAZ, HCAZ).
 #' @return A vector \code{y} of anthropometry measures corresponding to \code{y}-for-\code{x} scores \code{z}.
 reverse_whozr <- function(z, x, sex, ref, adjust_large_z = FALSE) {
-
     indat <- tibble::tibble(sex = as.character(sex), x = x, z = z) %>%
         dplyr::mutate(index = dplyr::row_number())
 
     dat <- ref %>%
         dplyr::full_join(indat, by = c("sex", "x")) %>%
-        dplyr::group_by_(~ sex) %>%
-        dplyr::mutate_(l = ~ stats::approx(x, l, x)$y,
-                       m = ~ stats::approx(x, m, x)$y,
-                       s = ~ stats::approx(x, s, x)$y,
-                       y = ~ ifelse(abs(l) >= 0.01,
-                                    m * (z * l * s + 1) ^ (1 / l),
-                                    m * exp(z * s))) %>%
+        dplyr::group_by(.data$sex) %>%
+        dplyr::mutate(
+            l = stats::approx(.data$x, .data$l, .data$x)$y,
+            m = stats::approx(.data$x, .data$m, .data$x)$y,
+            s = stats::approx(.data$x, .data$s, .data$x)$y,
+            y = ifelse(
+                abs(.data$l) >= 0.01,
+                .data$m * (.data$z * .data$l * .data$s + 1) ^ (1 / .data$l),
+                .data$m * exp(.data$z * .data$s)
+            )
+        ) %>%
         dplyr::semi_join(indat, by = c("sex", "x", "z", "index")) %>%
-        dplyr::arrange_(~ index)
+        dplyr::arrange(.data$index)
 
     if (adjust_large_z) {
         dat <- dat %>%
-            dplyr::mutate_(sd3 = ~ m * ((1 + l * s * 3 * sign(z)) ^ (1 / l)),
-                           sd23 = ~ sign(z) * (sd3 - m * ((1 + l * s * 2 * sign(z)) ^ (1 / l))),
-                           y = ~ ifelse(abs(z) > 3,
-                                        sd23 * (z - 3 * sign(z)) + sd3,
-                                        y))
+            dplyr::mutate(
+                sd3 = .data$m * ((
+                    1 + .data$l * .data$s * 3 * sign(.data$z)
+                ) ^ (1 / .data$l)),
+                sd23 = sign(.data$z) * (.data$sd3 - .data$m * ((1 + .data$l * .data$s * 2 * sign(.data$z)) ^ (1 / .data$l)
+                )),
+                y = ifelse(
+                    abs(.data$z) > 3,
+                    .data$sd23 * (.data$z - 3 * sign(.data$z)) + .data$sd3,
+                    .data$y
+                )
+            )
     }
 
     dat$y

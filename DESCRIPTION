@@ -14,7 +14,7 @@ Depends: R (>= 2.10)
 License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: dplyr (>= 0.7.8), tibble (>= 1.4.2), magrittr (>= 1.5), stats, utils
+Imports: dplyr (>= 0.7.8), tibble (>= 1.4.2), magrittr (>= 1.5), stats, utils, rlang
 RoxygenNote: 7.1.1
 Suggests: 
     testthat
