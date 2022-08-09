@@ -11,11 +11,11 @@ format_ms(x, figs = 3, sigfig = TRUE, use_quantiles = FALSE)
 
 \item{figs}{Number of digits or significant figure to print}
 
-\item{sigfig}{If \code{TRUE}, \code{figs} is interpreted as significant figures;
-if \code{FALSE}, \code{figs} is interpreted as number of digits. If significant
-figures are used, these are applied to the mean or median. Standard deviation or
-first/third quartiles are printed with the same number of digits as the mean
-or median.}
+\item{sigfig}{If \code{TRUE}, \code{figs} is interpreted as significant
+figures; if \code{FALSE}, \code{figs} is interpreted as number of digits.
+If significant figures are used, these are applied to the mean or median.
+Standard deviation or first/third quartiles are printed with the same
+number of digits as the mean or median.}
 
 \item{use_quantiles}{If \code{TRUE}, output is median (IQR). If \code{FALSE},
 output is mean (SD).}

@@ -13,8 +13,8 @@ zssa(subscap, age, sex, trim_extreme_z = FALSE)
 
 \item{sex}{Sex, coded as "F" and "M"}
 
-\item{trim_extreme_z}{Replace extreme scores (ZSSA > 5 or ZSSA < -5), described
-as biologically implausible by WHO, with \code{NA}.}
+\item{trim_extreme_z}{Replace extreme scores (ZSSA > 5 or ZSSA < -5),
+described as biologically implausible by WHO, with \code{NA}.}
 }
 \value{
 A vector of subscapular skinfold thickness-for-length z-scores

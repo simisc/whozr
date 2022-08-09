@@ -13,8 +13,8 @@ zwl(weight, length, sex, trim_extreme_z = FALSE)
 
 \item{sex}{Sex, coded as "F" and "M"}
 
-\item{trim_extreme_z}{Replace extreme scores (ZWL > 5 or ZWL < -5), described
-as biologically implausible by WHO, with \code{NA}.}
+\item{trim_extreme_z}{Replace extreme scores (ZWL > 5 or ZWL < -5),
+described as biologically implausible by WHO, with \code{NA}.}
 }
 \value{
 A vector of weight-for-length z-scores

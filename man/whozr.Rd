@@ -13,30 +13,31 @@ whozr(y, x, sex, ref, adjust_large_z = FALSE)
 
 \item{sex}{Sex, coded as "F" and "M"}
 
-\item{ref}{Reference data. A tibble or data.frame with columns named \code{sex},
-\code{x},\code{l}, \code{m} and \code{s}}
+\item{ref}{Reference data. A tibble or data.frame with columns named
+\code{sex}, \code{x},\code{l}, \code{m} and \code{s}}
 
 \item{adjust_large_z}{Shrink large z-scores towards +/-3? This is done in the
-WHO's "R macro" but not mentioned in any of the references above. Should only
-be used for soft-tissue measures (WAZ, BAZ, ACAZ, TCAZ, WHZ, SSAZ), not for
-hard-tissue measures (HAZ, HCAZ).}
+WHO's "R macro" but not mentioned in any of the references above. Should
+only be used for soft-tissue measures (WAZ, BAZ, ACAZ, TCAZ, WHZ, SSAZ),
+not for hard-tissue measures (HAZ, HCAZ).}
 }
 \value{
 A vector \code{z} of \code{y}-for-\code{x} z-scores
 }
 \description{
-Calculate z-scores from LMS tables. Wrappers are provided for use with the WHO
-  growth standards (0-5 years) and WHO growth references (5-19 years): see
-  \code{\link{zwa}}, \code{\link{zha}}, \code{\link{zwh}}, \code{\link{zwl}},
-  \code{\link{zba}}, \code{\link{zhca}}, \code{\link{zma}}, \code{\link{ztsa}},
-  \code{\link{zssa}}.
+Calculate z-scores from LMS tables. Wrappers are provided for use with the
+  WHO growth standards (0-5 years) and WHO growth references (5-19 years):
+  see \code{\link{zwa}}, \code{\link{zha}}, \code{\link{zwh}},
+  \code{\link{zwl}}, \code{\link{zba}}, \code{\link{zhca}},
+  \code{\link{zma}}, \code{\link{ztsa}}, \code{\link{zssa}}.
 }
 \details{
 Cole, TJ (1990) The LMS method for constructing normalized growth standards.
   \emph{European Journal of Clinical Nutrition} 44(1), 45-60.
 
-WHO Multicentre Growth Reference Study Group (2006) WHO Child Growth Standards
-  based on length/height, weight and age. \emph{Acta Paediatrica} 95(S450), 76-85.
+WHO Multicentre Growth Reference Study Group (2006) WHO Child Growth
+  Standards based on length/height, weight and age. \emph{Acta Paediatrica}
+  95(S450), 76-85.
 
 de Onis et al. (2007) Development of a WHO growth reference for school-aged
   children and adolescents. \emph{Bulletin of the World Health Organization}

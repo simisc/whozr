@@ -13,8 +13,8 @@ zhca(headc, age, sex, trim_extreme_z = FALSE)
 
 \item{sex}{Sex, coded as "F" and "M"}
 
-\item{trim_extreme_z}{Replace extreme scores (ZHCA > 5 or ZHCA < -5), described
-as biologically implausible by WHO, with \code{NA}.}
+\item{trim_extreme_z}{Replace extreme scores (ZHCA > 5 or ZHCA < -5),
+described as biologically implausible by WHO, with \code{NA}.}
 }
 \value{
 A vector of head circumference-for-length z-scores

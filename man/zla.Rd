@@ -17,7 +17,7 @@ A vector of height-for-age z-scores
 }
 \description{
 Calculate z-scores using with the WHO growth standards (0-5 years) and WHO
-  growth references (5-19 years). This is just an alias for \code{\link{zha}}:
-  both assume that length was measured recumbent up to 2 years (day 730) and
-  height was measured standing from day 731 onward.
+  growth references (5-19 years). This is just an alias for
+  \code{\link{zha}}: both assume that length was measured recumbent up to 2
+  years (day 730) and height was measured standing from day 731 onward.
 }

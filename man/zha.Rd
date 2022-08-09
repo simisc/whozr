@@ -14,8 +14,8 @@ standing thereafter, as recommended by WHO.}
 
 \item{sex}{Sex, coded as "F" and "M"}
 
-\item{trim_extreme_z}{Replace extreme scores (ZHA > 6 or ZHA < -6), described
-as biologically implausible by WHO, with \code{NA}.}
+\item{trim_extreme_z}{Replace extreme scores (ZHA > 6 or ZHA < -6),
+described as biologically implausible by WHO, with \code{NA}.}
 }
 \value{
 A vector of height-for-age z-scores

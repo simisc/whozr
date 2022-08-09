@@ -1,19 +1,4 @@
-#' Pipe
-#'
-#' Imported from \code{\link[magrittr]{pipe}}
-#' @importFrom magrittr %>%
-#' @name %>%
-#' @rdname pipe
-#' @export
-NULL
-
-#' Data pronoun
-#'
-#' Imported from \code{\link[rlang]{tidyeval-data}}
 #' @importFrom rlang .data
-#' @name .data
-#' @rdname tidyeval-data
-#' @export
 NULL
 
 #' Weight-for-age z-scores
@@ -24,12 +9,20 @@ NULL
 #' @param weight Weight (kg)
 #' @param age Age (days)
 #' @param sex Sex, coded as "F" and "M"
-#' @param trim_extreme_z Replace extreme scores (ZWA > 5 or ZWA < -6), described
-#'   as biologically implausible by WHO, with \code{NA}.
+#' @param trim_extreme_z Replace extreme scores (ZWA > 5 or ZWA < -6),
+#'   described as biologically implausible by WHO, with \code{NA}.
 #' @return A vector of weight-for-age z-scores
 zwa <- function(weight, age, sex, trim_extreme_z = FALSE) {
-    z <- whozr(y = weight, x = age, sex = sex, ref = rwa, adjust_large_z = TRUE)
-    trim_extreme_z && {z[(z < -6) | (z > 5)] <- NA}
+    z <- whozr(
+        y = weight,
+        x = age,
+        sex = sex,
+        ref = rwa,
+        adjust_large_z = TRUE
+    )
+    trim_extreme_z && {
+        z[(z < -6) | (z > 5)] <- NA
+    }
     return(z)
 }
 
@@ -44,21 +37,29 @@ zwa <- function(weight, age, sex, trim_extreme_z = FALSE) {
 #'   standing thereafter, as recommended by WHO.
 #' @param age Age (days)
 #' @param sex Sex, coded as "F" and "M"
-#' @param trim_extreme_z Replace extreme scores (ZHA > 6 or ZHA < -6), described
-#'   as biologically implausible by WHO, with \code{NA}.
+#' @param trim_extreme_z Replace extreme scores (ZHA > 6 or ZHA < -6),
+#'   described as biologically implausible by WHO, with \code{NA}.
 #' @return A vector of height-for-age z-scores
 zha <- function(height, age, sex, trim_extreme_z = FALSE) {
-    z <- whozr(y = height, x = age, sex = sex, ref = rha, adjust_large_z = FALSE)
-    trim_extreme_z && {z[abs(z) > 6] <- NA}
+    z <- whozr(
+        y = height,
+        x = age,
+        sex = sex,
+        ref = rha,
+        adjust_large_z = FALSE
+    )
+    trim_extreme_z && {
+        z[abs(z) > 6] <- NA
+    }
     return(z)
 }
 
 #' Length-for-age z-scores
 #'
 #' Calculate z-scores using with the WHO growth standards (0-5 years) and WHO
-#'   growth references (5-19 years). This is just an alias for \code{\link{zha}}:
-#'   both assume that length was measured recumbent up to 2 years (day 730) and
-#'   height was measured standing from day 731 onward.
+#'   growth references (5-19 years). This is just an alias for
+#'   \code{\link{zha}}: both assume that length was measured recumbent up to 2
+#'   years (day 730) and height was measured standing from day 731 onward.
 #' @export
 #' @param length Length (cm), measured recumbent up to 2 years (day 730) and
 #'   standing thereafter, as recommended by WHO.
@@ -75,12 +76,20 @@ zla <- function(length, ...) {
 #' @param weight Weight (kg)
 #' @param height Height (cm), measured standing
 #' @param sex Sex, coded as "F" and "M"
-#' @param trim_extreme_z Replace extreme scores (ZWH > 5 or ZWH < -5), described
-#'   as biologically implausible by WHO, with \code{NA}.
+#' @param trim_extreme_z Replace extreme scores (ZWH > 5 or ZWH < -5),
+#'   described as biologically implausible by WHO, with \code{NA}.
 #' @return A vector of weight-for-height z-scores
 zwh <- function(weight, height, sex, trim_extreme_z = FALSE) {
-    z <- whozr(y = weight, x = height, sex = sex, ref = rwh, adjust_large_z = TRUE)
-    trim_extreme_z && {z[abs(z) > 5] <- NA}
+    z <- whozr(
+        y = weight,
+        x = height,
+        sex = sex,
+        ref = rwh,
+        adjust_large_z = TRUE
+    )
+    trim_extreme_z && {
+        z[abs(z) > 5] <- NA
+    }
     return(z)
 }
 
@@ -91,12 +100,20 @@ zwh <- function(weight, height, sex, trim_extreme_z = FALSE) {
 #' @param weight Weight (kg)
 #' @param length Length (cm), measured recumbent
 #' @param sex Sex, coded as "F" and "M"
-#' @param trim_extreme_z Replace extreme scores (ZWL > 5 or ZWL < -5), described
-#'   as biologically implausible by WHO, with \code{NA}.
+#' @param trim_extreme_z Replace extreme scores (ZWL > 5 or ZWL < -5),
+#'   described as biologically implausible by WHO, with \code{NA}.
 #' @return A vector of weight-for-length z-scores
 zwl <- function(weight, length, sex, trim_extreme_z = FALSE) {
-    z <- whozr(y = weight, x = length, sex = sex, ref = rwl, adjust_large_z = TRUE)
-    trim_extreme_z && {z[abs(z) > 5] <- NA}
+    z <- whozr(
+        y = weight,
+        x = length,
+        sex = sex,
+        ref = rwl,
+        adjust_large_z = TRUE
+    )
+    trim_extreme_z && {
+        z[abs(z) > 5] <- NA
+    }
     return(z)
 }
 
@@ -108,12 +125,20 @@ zwl <- function(weight, length, sex, trim_extreme_z = FALSE) {
 #' @param bmi BMI
 #' @param age Age (days)
 #' @param sex Sex, coded as "F" and "M"
-#' @param trim_extreme_z Replace extreme scores (ZBA > 5 or ZBA < -5), described
-#'   as biologically implausible by WHO, with \code{NA}.
+#' @param trim_extreme_z Replace extreme scores (ZBA > 5 or ZBA < -5),
+#'   described as biologically implausible by WHO, with \code{NA}.
 #' @return A vector of BMI-for-age z-scores
 zba <- function(bmi, age, sex, trim_extreme_z = FALSE) {
-    z <- whozr(y = bmi, x = age, sex = sex, ref = rba, adjust_large_z = TRUE)
-    trim_extreme_z && {z[abs(z) > 5] <- NA}
+    z <- whozr(
+        y = bmi,
+        x = age,
+        sex = sex,
+        ref = rba,
+        adjust_large_z = TRUE
+    )
+    trim_extreme_z && {
+        z[abs(z) > 5] <- NA
+    }
     return(z)
 }
 
@@ -124,12 +149,20 @@ zba <- function(bmi, age, sex, trim_extreme_z = FALSE) {
 #' @param headc Head circumference (cm)
 #' @param age Age (days)
 #' @param sex Sex, coded as "F" and "M"
-#' @param trim_extreme_z Replace extreme scores (ZHCA > 5 or ZHCA < -5), described
-#'   as biologically implausible by WHO, with \code{NA}.
+#' @param trim_extreme_z Replace extreme scores (ZHCA > 5 or ZHCA < -5),
+#'   described as biologically implausible by WHO, with \code{NA}.
 #' @return A vector of head circumference-for-length z-scores
 zhca <- function(headc, age, sex, trim_extreme_z = FALSE) {
-    z <- whozr(y = headc, x = age, sex = sex, ref = rhca, adjust_large_z = FALSE)
-    trim_extreme_z && {z[abs(z) > 5] <- NA}
+    z <- whozr(
+        y = headc,
+        x = age,
+        sex = sex,
+        ref = rhca,
+        adjust_large_z = FALSE
+    )
+    trim_extreme_z && {
+        z[abs(z) > 5] <- NA
+    }
     return(z)
 }
 
@@ -140,12 +173,20 @@ zhca <- function(headc, age, sex, trim_extreme_z = FALSE) {
 #' @param muac Mid-upper arm cicrumference (cm)
 #' @param age Age (days)
 #' @param sex Sex, coded as "F" and "M"
-#' @param trim_extreme_z Replace extreme scores (ZMA > 5 or ZMA < -5), described
-#'   as biologically implausible by WHO, with \code{NA}.
+#' @param trim_extreme_z Replace extreme scores (ZMA > 5 or ZMA < -5),
+#'   described as biologically implausible by WHO, with \code{NA}.
 #' @return A vector of MUAC-for-length z-scores
 zma <- function(muac, age, sex, trim_extreme_z = FALSE) {
-    z <- whozr(y = muac, x = age, sex = sex, ref = raca, adjust_large_z = TRUE)
-    trim_extreme_z && {z[abs(z) > 5] <- NA}
+    z <- whozr(
+        y = muac,
+        x = age,
+        sex = sex,
+        ref = raca,
+        adjust_large_z = TRUE
+    )
+    trim_extreme_z && {
+        z[abs(z) > 5] <- NA
+    }
     return(z)
 }
 
@@ -156,12 +197,20 @@ zma <- function(muac, age, sex, trim_extreme_z = FALSE) {
 #' @param tricep Tricep skinfold thickness (mm)
 #' @param age Age (days)
 #' @param sex Sex, coded as "F" and "M"
-#' @param trim_extreme_z Replace extreme scores (ZTSA > 5 or ZTSA < -5), described
-#'   as biologically implausible by WHO, with \code{NA}.
+#' @param trim_extreme_z Replace extreme scores (ZTSA > 5 or ZTSA < -5),
+#'   described as biologically implausible by WHO, with \code{NA}.
 #' @return A vector of tricep skinfold thickness-for-length z-scores
 ztsa <- function(tricep, age, sex, trim_extreme_z = FALSE) {
-    z <- whozr(y = tricep, x = age, sex = sex, ref = rtsa, adjust_large_z = TRUE)
-    trim_extreme_z && {z[abs(z) > 5] <- NA}
+    z <- whozr(
+        y = tricep,
+        x = age,
+        sex = sex,
+        ref = rtsa,
+        adjust_large_z = TRUE
+    )
+    trim_extreme_z && {
+        z[abs(z) > 5] <- NA
+    }
     return(z)
 }
 
@@ -172,28 +221,37 @@ ztsa <- function(tricep, age, sex, trim_extreme_z = FALSE) {
 #' @param subscap Subscapular skinfold thickness (mm)
 #' @param age Age (days)
 #' @param sex Sex, coded as "F" and "M"
-#' @param trim_extreme_z Replace extreme scores (ZSSA > 5 or ZSSA < -5), described
-#'   as biologically implausible by WHO, with \code{NA}.
+#' @param trim_extreme_z Replace extreme scores (ZSSA > 5 or ZSSA < -5),
+#'   described as biologically implausible by WHO, with \code{NA}.
 #' @return A vector of subscapular skinfold thickness-for-length z-scores
 zssa <- function(subscap, age, sex, trim_extreme_z = FALSE) {
-    z <- whozr(y = subscap, x = age, sex = sex, ref = rssa, adjust_large_z = TRUE)
-    trim_extreme_z && {z[abs(z) > 5] <- NA}
+    z <- whozr(
+        y = subscap,
+        x = age,
+        sex = sex,
+        ref = rssa,
+        adjust_large_z = TRUE
+    )
+    trim_extreme_z && {
+        z[abs(z) > 5] <- NA
+    }
     return(z)
 }
 
 #' Calculate z-scores from LMS tables
 #'
-#' Calculate z-scores from LMS tables. Wrappers are provided for use with the WHO
-#'   growth standards (0-5 years) and WHO growth references (5-19 years): see
-#'   \code{\link{zwa}}, \code{\link{zha}}, \code{\link{zwh}}, \code{\link{zwl}},
-#'   \code{\link{zba}}, \code{\link{zhca}}, \code{\link{zma}}, \code{\link{ztsa}},
-#'   \code{\link{zssa}}.
+#' Calculate z-scores from LMS tables. Wrappers are provided for use with the
+#'   WHO growth standards (0-5 years) and WHO growth references (5-19 years):
+#'   see \code{\link{zwa}}, \code{\link{zha}}, \code{\link{zwh}},
+#'   \code{\link{zwl}}, \code{\link{zba}}, \code{\link{zhca}},
+#'   \code{\link{zma}}, \code{\link{ztsa}}, \code{\link{zssa}}.
 #'
 #' Cole, TJ (1990) The LMS method for constructing normalized growth standards.
 #'   \emph{European Journal of Clinical Nutrition} 44(1), 45-60.
 #'
-#' WHO Multicentre Growth Reference Study Group (2006) WHO Child Growth Standards
-#'   based on length/height, weight and age. \emph{Acta Paediatrica} 95(S450), 76-85.
+#' WHO Multicentre Growth Reference Study Group (2006) WHO Child Growth
+#'   Standards based on length/height, weight and age. \emph{Acta Paediatrica}
+#'   95(S450), 76-85.
 #'
 #' de Onis et al. (2007) Development of a WHO growth reference for school-aged
 #'   children and adolescents. \emph{Bulletin of the World Health Organization}
@@ -202,38 +260,42 @@ zssa <- function(subscap, age, sex, trim_extreme_z = FALSE) {
 #' @param y Outcome veariable
 #' @param x Predictor, typically age
 #' @param sex Sex, coded as "F" and "M"
-#' @param ref Reference data. A tibble or data.frame with columns named \code{sex},
-#'   \code{x},\code{l}, \code{m} and \code{s}
+#' @param ref Reference data. A tibble or data.frame with columns named
+#'   \code{sex}, \code{x},\code{l}, \code{m} and \code{s}
 #' @param adjust_large_z Shrink large z-scores towards +/-3? This is done in the
-#'   WHO's "R macro" but not mentioned in any of the references above. Should only
-#'   be used for soft-tissue measures (WAZ, BAZ, ACAZ, TCAZ, WHZ, SSAZ), not for
-#'   hard-tissue measures (HAZ, HCAZ).
+#'   WHO's "R macro" but not mentioned in any of the references above. Should
+#'   only be used for soft-tissue measures (WAZ, BAZ, ACAZ, TCAZ, WHZ, SSAZ),
+#'   not for hard-tissue measures (HAZ, HCAZ).
 #' @return A vector \code{z} of \code{y}-for-\code{x} z-scores
 whozr <- function(y, x, sex, ref, adjust_large_z = FALSE) {
-    indat <- tibble::tibble(sex = as.character(sex), x = x, y = y) %>%
+    indat <- tibble::tibble(sex = as.character(sex), x = x, y = y) |>
         dplyr::mutate(index = dplyr::row_number())
 
-    dat <- ref %>%
-        dplyr::full_join(indat, by = c("sex", "x")) %>%
-        dplyr::group_by(.data$sex) %>%
+    dat <- ref |>
+        dplyr::full_join(indat, by = c("sex", "x")) |>
+        dplyr::group_by(.data$sex) |>
         dplyr::mutate(
             l = stats::approx(.data$x, .data$l, .data$x)$y,
             m = stats::approx(.data$x, .data$m, .data$x)$y,
             s = stats::approx(.data$x, .data$s, .data$x)$y,
             z = ifelse(
                 abs(.data$l) >= 0.01,
-                (((.data$y / .data$m) ^ .data$l) - 1) / (.data$l * .data$s),
+                (((.data$y / .data$m)^.data$l) - 1) / (.data$l * .data$s),
                 log(.data$y / .data$m) / .data$s
             )
-        ) %>%
-        dplyr::semi_join(indat, by = c("sex", "x", "y", "index")) %>%
+        ) |>
+        dplyr::semi_join(indat, by = c("sex", "x", "y", "index")) |>
         dplyr::arrange(.data$index)
 
     if (adjust_large_z) {
-        dat <- dat %>%
+        dat <- dat |>
             dplyr::mutate(
-                sd3 = .data$m * ((1 + .data$l * .data$s * 3 * sign(.data$z)) ^ (1 / .data$l)),
-                sd23 = sign(.data$z) * (.data$sd3 - .data$m * ((1 + .data$l * .data$s * 2 * sign(.data$z)) ^ (1 / .data$l))),
+                sd3 = .data$m * (
+                    (1 + .data$l * .data$s * 3 * sign(.data$z))^(1 / .data$l)
+                ),
+                sd23 = sign(.data$z) * (.data$sd3 - .data$m * (
+                    (1 + .data$l * .data$s * 2 * sign(.data$z))^(1 / .data$l)
+                )),
                 z = ifelse(
                     abs(.data$z) > 3,
                     3 * sign(.data$z) + ((.data$y - .data$sd3) / .data$sd23),
@@ -253,38 +315,43 @@ whozr <- function(y, x, sex, ref, adjust_large_z = FALSE) {
 #' @param z z-score
 #' @param x Predictor, typically age
 #' @param sex Sex, coded as "F" and "M"
-#' @param ref Reference data. A tibble or data.frame with columns named \code{sex},
-#'   \code{x},\code{l}, \code{m} and \code{s}
-#' @param adjust_large_z Were large z-scores shrunk towards +/-3? This is done in the
-#'   WHO's "R macro" but not mentioned in any of the references cited at
-#'   \code{\link{whozr}}.Should only be used for soft-tissue measures (WAZ, BAZ,
-#'   ACAZ, TCAZ, WHZ, SSAZ), not for hard-tissue measures (HAZ, HCAZ).
-#' @return A vector \code{y} of anthropometry measures corresponding to \code{y}-for-\code{x} scores \code{z}.
+#' @param ref Reference data. A tibble or data.frame with columns named
+#'   \code{sex}, \code{x},\code{l}, \code{m} and \code{s}
+#' @param adjust_large_z Were large z-scores shrunk towards +/-3? This is done
+#'   in the WHO's "R macro" but not mentioned in any of the references cited at
+#'   \code{\link{whozr}}.Should only be used for soft-tissue measures (WAZ,
+#'   BAZ, ACAZ, TCAZ, WHZ, SSAZ), not for hard-tissue measures (HAZ, HCAZ).
+#' @return A vector \code{y} of anthropometry measures corresponding to
+#'   \code{y}-for-\code{x} scores \code{z}.
 reverse_whozr <- function(z, x, sex, ref, adjust_large_z = FALSE) {
-    indat <- tibble::tibble(sex = as.character(sex), x = x, z = z) %>%
+    indat <- tibble::tibble(sex = as.character(sex), x = x, z = z) |>
         dplyr::mutate(index = dplyr::row_number())
 
-    dat <- ref %>%
-        dplyr::full_join(indat, by = c("sex", "x")) %>%
-        dplyr::group_by(.data$sex) %>%
+    dat <- ref |>
+        dplyr::full_join(indat, by = c("sex", "x")) |>
+        dplyr::group_by(.data$sex) |>
         dplyr::mutate(
             l = stats::approx(.data$x, .data$l, .data$x)$y,
             m = stats::approx(.data$x, .data$m, .data$x)$y,
             s = stats::approx(.data$x, .data$s, .data$x)$y,
             y = ifelse(
                 abs(.data$l) >= 0.01,
-                .data$m * (.data$z * .data$l * .data$s + 1) ^ (1 / .data$l),
+                .data$m * (.data$z * .data$l * .data$s + 1)^(1 / .data$l),
                 .data$m * exp(.data$z * .data$s)
             )
-        ) %>%
-        dplyr::semi_join(indat, by = c("sex", "x", "z", "index")) %>%
+        ) |>
+        dplyr::semi_join(indat, by = c("sex", "x", "z", "index")) |>
         dplyr::arrange(.data$index)
 
     if (adjust_large_z) {
-        dat <- dat %>%
+        dat <- dat |>
             dplyr::mutate(
-                sd3 = .data$m * ((1 + .data$l * .data$s * 3 * sign(.data$z)) ^ (1 / .data$l)),
-                sd23 = sign(.data$z) * (.data$sd3 - .data$m * ((1 + .data$l * .data$s * 2 * sign(.data$z)) ^ (1 / .data$l))),
+                sd3 = .data$m * (
+                    (1 + .data$l * .data$s * 3 * sign(.data$z))^(1 / .data$l)
+                ),
+                sd23 = sign(.data$z) * (.data$sd3 - .data$m * (
+                    (1 + .data$l * .data$s * 2 * sign(.data$z))^(1 / .data$l)
+                )),
                 y = ifelse(
                     abs(.data$z) > 3,
                     .data$sd23 * (.data$z - 3 * sign(.data$z)) + .data$sd3,
@@ -304,11 +371,11 @@ reverse_whozr <- function(z, x, sex, ref, adjust_large_z = FALSE) {
 #' @export
 #' @param x Numeric vector to be summarised
 #' @param figs Number of digits or significant figure to print
-#' @param sigfig If \code{TRUE}, \code{figs} is interpreted as significant figures;
-#'   if \code{FALSE}, \code{figs} is interpreted as number of digits. If significant
-#'   figures are used, these are applied to the mean or median. Standard deviation or
-#'   first/third quartiles are printed with the same number of digits as the mean
-#'   or median.
+#' @param sigfig If \code{TRUE}, \code{figs} is interpreted as significant
+#'   figures; if \code{FALSE}, \code{figs} is interpreted as number of digits.
+#'   If significant figures are used, these are applied to the mean or median.
+#'   Standard deviation or first/third quartiles are printed with the same
+#'   number of digits as the mean or median.
 #' @param use_quantiles If \code{TRUE}, output is median (IQR). If \code{FALSE},
 #'   output is mean (SD).
 #' @return A string, formatted as median (IQR) or mean (SD) with the chosen
@@ -335,8 +402,11 @@ format_ms <- function(x,
         a <- round(a, r)
         s <- round(s, r)
 
-        format <- ifelse(r < 1, "%.0f",
-                         paste0("%.", as.character(r), "f"))
+        format <- ifelse(
+            r < 1,
+            "%.0f",
+            paste0("%.", as.character(r), "f")
+        )
     } else {
         format <- paste0("%.", as.character(figs), "f")
     }

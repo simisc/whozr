@@ -13,16 +13,17 @@ reverse_whozr(z, x, sex, ref, adjust_large_z = FALSE)
 
 \item{sex}{Sex, coded as "F" and "M"}
 
-\item{ref}{Reference data. A tibble or data.frame with columns named \code{sex},
-\code{x},\code{l}, \code{m} and \code{s}}
+\item{ref}{Reference data. A tibble or data.frame with columns named
+\code{sex}, \code{x},\code{l}, \code{m} and \code{s}}
 
-\item{adjust_large_z}{Were large z-scores shrunk towards +/-3? This is done in the
-WHO's "R macro" but not mentioned in any of the references cited at
-\code{\link{whozr}}.Should only be used for soft-tissue measures (WAZ, BAZ,
-ACAZ, TCAZ, WHZ, SSAZ), not for hard-tissue measures (HAZ, HCAZ).}
+\item{adjust_large_z}{Were large z-scores shrunk towards +/-3? This is done
+in the WHO's "R macro" but not mentioned in any of the references cited at
+\code{\link{whozr}}.Should only be used for soft-tissue measures (WAZ,
+BAZ, ACAZ, TCAZ, WHZ, SSAZ), not for hard-tissue measures (HAZ, HCAZ).}
 }
 \value{
-A vector \code{y} of anthropometry measures corresponding to \code{y}-for-\code{x} scores \code{z}.
+A vector \code{y} of anthropometry measures corresponding to
+  \code{y}-for-\code{x} scores \code{z}.
 }
 \description{
 Calculate original anthropometry from z-scores and LMS tables.
