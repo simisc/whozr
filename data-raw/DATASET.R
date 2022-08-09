@@ -4,67 +4,39 @@
 library(dplyr)
 library(readr)
 library(stringr)
+library(purrr)
+
+days_per_month <- 365.2425 / 12
 
 rawdir <- "./data-raw/"
-files <- list.files(path = rawdir, pattern = "*.txt")
+fnames <- list.files(path = rawdir, pattern = "*.txt")
+names(fnames) <- str_remove(fnames, "\\.txt")
 
-data <- lapply(files, function(f) {
-    d <- read_tsv(file.path(rawdir, f)) |>
-        mutate(sex = recode(sex, `1` = "M", `2` = "F"))
-    names(d)[2] <- "x"
-    if (ncol(d) == 6) {
-        names(d)[6] <- "pos"
-    }
-    d
-})
+process_raw <- function(d) {
+    d |>
+        rename(x = 2) |>
+        select(sex, x, l, m, s) |>
+        mutate(sex = recode(sex, `1` = "M", `2` = "F")) |>
+        group_by(sex)
+}
 
-names(data) <- str_replace(str_to_lower(files), ".txt", "")
+dat <- fnames |>
+    map(~ read_tsv(file.path(rawdir, .x), show_col_types = FALSE)) |>
+    map(process_raw) |>
+    map_at(
+        .at = c("hfawho2007", "wfawho2007", "bfawho2007"),
+        .f = ~ mutate(.x, x = x * days_per_month)
+    )
 
-# Can just ignore position: assume L up to 730 days, H after 731 days
-lapply(data, function(d) {
-    if (ncol(d) == 6) {
-        return(tapply(d$x, d$pos, summary))
-    }
-})
-
-names(data)
-dpm <- 365.2425 / 12
-
-# Height
-rha <- bind_rows(
-    data$lenanthro |>
-        dplyr::select(-pos),
-    data$hfawho2007 |>
-        mutate(x = x * dpm)
-) |>
-    arrange(sex, x)
-
-
-# Weight
-rwa <- bind_rows(
-    data$weianthro,
-    data$wfawho2007 |>
-        mutate(x = x * dpm)
-) |>
-    arrange(sex, x)
-
-# BMI
-rba <- bind_rows(
-    data$bmianthro |>
-        dplyr::select(-pos),
-    data$bfawho2007 |>
-        mutate(x = x * dpm)
-) |>
-    arrange(sex, x)
-
-raca <- data$acanthro # MUAC for age
-rhca <- data$hcanthro # Head circ for age
-rssa <- data$ssanthro # Subscapular skinfold for age
-rtsa <- data$tsanthro # Triceps skinfold for age
-rwh <- data$wfhanthro |> # Weight for HEIGHT
-    dplyr::select(-pos)
-rwl <- data$wflanthro |> # Weight for LENGTH
-    dplyr::select(-pos)
+rha <- bind_rows(dat$lenanthro, dat$hfawho2007) # Height for age
+rwa <- bind_rows(dat$weianthro, dat$wfawho2007) # Weight for age
+rba <- bind_rows(dat$bmianthro, dat$bfawho2007) # BMI age
+raca <- dat$acanthro # MUAC for age
+rhca <- dat$hcanthro # Head circ for age
+rssa <- dat$ssanthro # Subscapular skinfold for age
+rtsa <- dat$tsanthro # Triceps skinfold for age
+rwh <- dat$wfhanthro # Weight for HEIGHT
+rwl <- dat$wflanthro # Weight for LENGTH
 
 usethis::use_data(raca,
     rba,
