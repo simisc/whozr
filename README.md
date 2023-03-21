@@ -3,12 +3,14 @@
 
 # whozr
 
-[![R build
-status](https://github.com/simisc/whozr/workflows/R-CMD-check/badge.svg)](https://github.com/simisc/whozr/actions)
+<!-- badges: start -->
+
+[![check-standard](https://github.com/simisc/whozr/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/simisc/whozr/actions/workflows/check-standard.yaml)
 [![DOI](https://zenodo.org/badge/113995327.svg)](https://zenodo.org/badge/latestdoi/113995327)
 [![Licence](https://img.shields.io/github/license/simisc/whozr)](https://github.com/simisc/whozr/blob/master/LICENSE)
 [![Lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 [![codecov](https://codecov.io/gh/simisc/whozr/branch/master/graph/badge.svg?token=OTFYOOXEVC)](https://codecov.io/gh/simisc/whozr)
+<!-- badges: end -->
 
 Convert raw anthropometric measurement (weight, height, length, BMI,
 MUAC, head circumeference, tricep skinfold and subscapular skinfold) to
@@ -23,26 +25,30 @@ from z-scores (requires further testing).
 You can install whozr from github with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("simisc/whozr")
+# install.packages("remotes")
+remotes::install_github("simisc/whozr")
 ```
 
 ## Example
 
 ``` r
-library(dplyr) # tibble(), %>%, mutate()
+library(dplyr) # tibble(), mutate()
 library(knitr) # kable()
 library(whozr) # zwa(), zla(), zwl()
 ```
 
 ``` r
-tibble(sex = c("F", "M", "M", "F"),
-       age_days = c(120, 310, 370, 460),
-       weight_kg = c(5.98, 8.09, 8.40, 8.46),
-       length_cm = c(60.2, 70.7, 72.6, 74.9)) %>%
-    mutate(waz = zwa(weight_kg, age_days, sex),
-           laz = zla(length_cm, age_days, sex),
-           wlz = zwl(weight_kg, length_cm, sex)) %>%
+tibble(
+    sex = c("F", "M", "M", "F"),
+    age_days = c(120, 310, 370, 460),
+    weight_kg = c(5.98, 8.09, 8.40, 8.46),
+    length_cm = c(60.2, 70.7, 72.6, 74.9)
+) |>
+    mutate(
+        waz = zwa(weight_kg, age_days, sex),
+        laz = zla(length_cm, age_days, sex),
+        wlz = zwl(weight_kg, length_cm, sex)
+    ) |>
     kable(digits = 3)
 ```
 
